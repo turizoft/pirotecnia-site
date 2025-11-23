@@ -1,0 +1,145 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-oswald);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar: hsl(var(--sidebar));
+  --color-ring: hsl(var(--ring));
+  --color-input: hsl(var(--input));
+  --color-border: hsl(var(--border));
+  --color-destructive: hsl(var(--destructive));
+  --color-warning: hsl(var(--warning));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card: hsl(var(--card));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: 0 0% 98%;
+  --foreground: 0 0% 6%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 6%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 6%;
+  --primary: 353 77% 41%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 12%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 88%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 39 86% 63%;
+  --accent-foreground: 0 0% 8%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --warning: 39 86% 63%;
+  --warning-foreground: 0 0% 8%;
+  --cta: 353 77% 41%;
+  --cta-foreground: 0 0% 100%;
+  --border: 0 0% 90%;
+  --input: 0 0% 95%;
+  --ring: 353 77% 41%;
+  --sidebar: 0 0% 100%;
+  --sidebar-foreground: 0 0% 10%;
+  --sidebar-primary: 353 77% 41%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 39 86% 63%;
+  --sidebar-accent-foreground: 0 0% 8%;
+  --sidebar-border: 0 0% 90%;
+  --sidebar-ring: 353 77% 41%;
+}
+
+.dark {
+  --background: 0 0% 8%;
+  --foreground: 0 0% 95%;
+  --card: 0 0% 12%;
+  --card-foreground: 0 0% 95%;
+  --popover: 0 0% 12%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 353 77% 46%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 88%;
+  --secondary-foreground: 0 0% 12%;
+  --muted: 0 0% 25%;
+  --muted-foreground: 0 0% 70%;
+  --accent: 39 86% 68%;
+  --accent-foreground: 0 0% 12%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --warning: 39 86% 63%;
+  --warning-foreground: 0 0% 12%;
+  --border: 0 0% 20%;
+  --input: 0 0% 16%;
+  --ring: 353 77% 46%;
+  --sidebar: 0 0% 10%;
+  --sidebar-foreground: 0 0% 90%;
+  --sidebar-primary: 353 77% 41%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 39 86% 63%;
+  --sidebar-accent-foreground: 0 0% 10%;
+  --sidebar-border: 0 0% 20%;
+  --sidebar-ring: 353 77% 46%;
+  --cta: 353 77% 41%;
+  --cta-foreground: 0 0% 100%;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+
+  :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  pre,
+  code {
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-roboto-slab), serif;
+  }
+}
+
+/* Ensure TopLoader stays above all UI (including during fade-out) */
+#nprogress {
+  position: fixed; /* needed for z-index to apply */
+  z-index: 9999;
+}

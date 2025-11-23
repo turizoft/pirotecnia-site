@@ -1,0 +1,224 @@
+/** @import must precede all other statements */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /**
+   * Tailwind CSS theme
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   * A different format will require also updating the theme in tailwind.config.ts.
+  */
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 6%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 6%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 6%;
+
+    --primary: 356 82% 49%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 88%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 39 86% 63%;
+    --accent-foreground: 0 0% 8%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 95%;
+    --ring: 356 82% 49%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 100%;
+
+    --sidebar-foreground: 0 0% 10%;
+
+    --sidebar-primary: 356 82% 49%;
+
+    --sidebar-primary-foreground: 0 0% 100%;
+
+    --sidebar-accent: 39 86% 63%;
+
+    --sidebar-accent-foreground: 0 0% 8%;
+
+    --sidebar-border: 0 0% 90%;
+
+    --sidebar-ring: 356 82% 49%;
+  }
+
+  .dark {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 356 82% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 88%;
+    --secondary-foreground: 0 0% 12%;
+
+    --muted: 0 0% 25%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 39 86% 68%;
+    --accent-foreground: 0 0% 12%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 16%;
+    --ring: 356 82% 55%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 90%;
+    --sidebar-primary: 356 82% 49%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 39 86% 63%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 356 82% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  pre,
+  code {
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto Slab", serif;
+  }
+}
+
+@layer components {
+  .ornate-button {
+    position: relative;
+    border-radius: 0;
+  }
+
+  .ornate-button::before,
+  .ornate-button::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid;
+    pointer-events: none;
+  }
+
+  .ornate-button::before {
+    top: -6px;
+    left: -6px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .ornate-button::after {
+    bottom: -6px;
+    right: -6px;
+    border-left: none;
+    border-top: none;
+  }
+
+  .ornate-button-red::before,
+  .ornate-button-red::after {
+    border-color: #E41E2A;
+  }
+
+  .ornate-button-black::before,
+  .ornate-button-black::after {
+    border-color: #000000;
+  }
+
+  /* Blinking star animation */
+  @keyframes blink-star {
+    0%, 100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes firework {
+    0% {
+      transform: translate(0, 0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--tx), var(--ty));
+      opacity: 0;
+    }
+  }
+
+  .star {
+    animation: twinkle 3s infinite;
+  }
+
+  .star:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+
+  .star:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+
+  .star:nth-child(4) {
+    animation-delay: 0.9s;
+  }
+
+  .star:nth-child(5) {
+    animation-delay: 1.2s;
+  }
+
+  .star:nth-child(6) {
+    animation-delay: 1.5s;
+  }
+
+  .firework-particle {
+    animation: firework 0.6s ease-out forwards;
+  }
+}
