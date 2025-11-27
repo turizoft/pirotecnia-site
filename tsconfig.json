@@ -39,7 +39,10 @@
       "@/generated/*": ["generated/*"],
       "@/schemas/*": ["schemas/*"],
       "@/i18n/*": ["i18n/*"],
-      "@/tests/*": ["../tests/*"]
+      "@/tests/*": ["../tests/*"],
+      "@payload-config": ["../payload.config.ts"],
+      "@/payload.import-map": ["payload.import-map"],
+      "@/payload-types": ["payload-types"]
     }
   },
   "ts-node": {

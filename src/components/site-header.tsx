@@ -28,7 +28,7 @@ export function SiteHeader() {
               <Link
                 key={item.href}
                 href={item.href}
-                className='rounded-none px-3 py-2 text-sm font-black uppercase tracking-wider text-black transition-colors hover:bg-primary/50 hover:text-accent md:text-base'
+                className='rounded-none px-3 py-2 text-sm font-black uppercase tracking-wider text-black transition-colors hover:bg-primary hover:text-white md:text-base'
               >
                 {item.label}
               </Link>

@@ -1,12 +1,51 @@
-import Link from 'next/link';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es';
 import Image from 'next/image';
+import Link from 'next/link';
 import { MapPin, Shield, Sparkles, Star, Users, Zap } from 'lucide-react';
 
 import { CornerOrnament } from '@/components/corner-ornament';
+import { CTASection } from '@/components/cta-section';
 import { SiteHeader } from '@/components/site-header';
+import { getPayloadClient } from '@/lib/payload';
 import { cn } from '@/lib/utils';
 
+dayjs.locale('es');
+
+export const revalidate = 0;
+
 const DIAMONDS = Array.from({ length: 20 });
+
+const ICONS = {
+  shield: Shield,
+  users: Users,
+  zap: Zap,
+} as const;
+
+const DEFAULT_STATS = [
+  { value: '5,000+', label: 'Productos Vendidos' },
+  { value: '98%', label: 'Satisfacción' },
+  { value: '25+', label: 'Años de Experiencia' },
+  { value: '50+', label: 'Ubicaciones' },
+];
+
+const DEFAULT_REASONS = [
+  {
+    icon: 'shield',
+    title: 'Certificado Seguro',
+    description: 'Todos los productos cumplen con estándares internacionales de seguridad',
+  },
+  {
+    icon: 'users',
+    title: 'Equipo Experto',
+    description: 'Profesionales listos para ayudar con tus necesidades',
+  },
+  {
+    icon: 'zap',
+    title: 'Entrega Rápida',
+    description: 'Entrega nacional con manejo profesional',
+  },
+];
 
 function DiamondRow({ className }: { className?: string }) {
   return (
@@ -20,7 +59,122 @@ function DiamondRow({ className }: { className?: string }) {
   );
 }
 
-export default function Home() {
+function getMediaUrl(media: any) {
+  if (!media) return null;
+  if (typeof media === 'string') return media;
+  if ('url' in media && media.url) return media.url as string;
+  if ('filename' in media && media.filename) return `/media/${media.filename}` as string;
+  return null;
+}
+
+export default async function Home() {
+  const payload = await getPayloadClient();
+
+  const [home, productsRes, featuredRes, eventsRes, locationsRes, testimonialsRes] =
+    await Promise.all([
+      payload.findGlobal({ slug: 'homepage', depth: 2 }).catch(() => null),
+      payload
+        .find({
+          collection: 'products',
+          depth: 2,
+          limit: 12,
+          overrideAccess: false,
+        })
+        .catch(() => null),
+      payload
+        .find({
+          collection: 'products',
+          depth: 2,
+          limit: 6,
+          where: { featured: { equals: true } },
+          overrideAccess: false,
+        })
+        .catch(() => null),
+      payload
+        .find({
+          collection: 'events',
+          limit: 3,
+          sort: 'date',
+          overrideAccess: false,
+        })
+        .catch(() => null),
+      payload
+        .find({
+          collection: 'locations',
+          limit: 3,
+          overrideAccess: false,
+        })
+        .catch(() => null),
+      payload
+        .find({
+          collection: 'testimonials',
+          limit: 3,
+          overrideAccess: false,
+        })
+        .catch(() => null),
+    ]);
+
+  const allProducts = productsRes?.docs ?? [];
+  const featuredProductsFromGlobal =
+    (home as any)?.featured?.products?.map((product: any) => {
+      if (typeof product === 'string') {
+        return allProducts.find((p: any) => `${p.id}` === product);
+      }
+      return product;
+    }) ?? [];
+
+  const featuredProducts =
+    featuredProductsFromGlobal.filter(Boolean).length > 0
+      ? featuredProductsFromGlobal.filter(Boolean)
+      : featuredRes?.docs?.length
+      ? featuredRes.docs
+      : allProducts.slice(0, 3);
+
+  const stats = (home as any)?.stats?.length ? (home as any).stats : DEFAULT_STATS;
+  const reasons = (home as any)?.reasons?.length ? (home as any).reasons : DEFAULT_REASONS;
+  const events = eventsRes?.docs ?? [];
+  const locations = locationsRes?.docs ?? [];
+  const testimonials = testimonialsRes?.docs ?? [];
+
+  const hero = (home as any)?.hero ?? {
+    eyebrow: 'Excelencia Pirotécnica',
+    title: 'FAVIO FAVIO DOMINÓ',
+    subtitle: 'Pólvora y Pirotecnia Premium para Colombia',
+    description:
+      'La fuente más confiable para espectáculos pirotécnicos profesionales. Certificados seguros, elaborados por expertos, inolvidablemente espectaculares.',
+    primaryCtaLabel: 'Ver Colección',
+    primaryCtaHref: '/products',
+    secondaryCtaLabel: 'Ver Eventos',
+    secondaryCtaHref: '/events',
+    videoUrl: '/header_video.mp4',
+  };
+
+  const featuredHeading = (home as any)?.featured?.heading ?? 'Colección Destacada';
+  const featuredSubheading =
+    (home as any)?.featured?.subheading ??
+    'Productos pirotécnicos premium cuidadosamente seleccionados';
+
+  const eventsHeading = (home as any)?.eventsSection?.heading ?? 'Próximos Eventos';
+  const eventsSubheading =
+    (home as any)?.eventsSection?.subheading ?? 'Espectáculos impresionantes en toda Colombia';
+
+  const locationsHeading = (home as any)?.locationsSection?.heading ?? 'Visítanos';
+  const locationsSubheading =
+    (home as any)?.locationsSection?.subheading ?? 'Salas de exhibición profesionales en todo el país';
+  const locationsHero = getMediaUrl((home as any)?.locationsSection?.heroImage) || '/store_bg.png';
+
+  const testimonialsHeading =
+    (home as any)?.testimonialsSection?.heading ?? 'Lo Que Dicen Nuestros Clientes';
+  const testimonialsSubheading =
+    (home as any)?.testimonialsSection?.subheading ?? 'Confiado por profesionales en toda Colombia';
+
+  const cta = (home as any)?.cta ?? {
+    title: '¿Listo Para Encender?',
+    body: 'Explora nuestra colección premium y experimenta la excelencia pirotécnica.',
+    primaryLabel: 'Comprar Ahora',
+    primaryHref: '/products',
+  };
+
   return (
     <div className='w-full bg-primary text-foreground'>
       <SiteHeader />
@@ -30,20 +184,17 @@ export default function Home() {
           <DiamondRow />
         </div>
 
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className='absolute inset-0 h-full w-full object-cover'
-        >
-          <source src='/header_video.mp4' type='video/mp4' />
+        <video autoPlay loop muted playsInline className='absolute inset-0 h-full w-full object-cover'>
+          <source src={hero.videoUrl} type='video/mp4' />
         </video>
-        <div className='absolute inset-0' style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='2' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='2' height='2' fill='rgba(255,255,255,0.25)'/%3E%3Ccircle cx='0.5' cy='0.5' r='0.5' fill='%23BA182F'/%3E%3C/svg%3E")`,
-          backgroundSize: '2px 2px',
-          backgroundRepeat: 'repeat'
-        }} />
+        <div
+          className='absolute inset-0'
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='2' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='2' height='2' fill='rgba(255,255,255,0.25)'/%3E%3Ccircle cx='0.5' cy='0.5' r='0.5' fill='%23BA182F'/%3E%3C/svg%3E")`,
+            backgroundSize: '2px 2px',
+            backgroundRepeat: 'repeat',
+          }}
+        />
 
         <div className='container relative z-10 mx-auto px-4 py-20 md:py-32'>
           <div className='grid items-center gap-12 md:grid-cols-2'>
@@ -52,33 +203,31 @@ export default function Home() {
                 <div className='relative inline-block rounded-none border-2 border-black px-6 py-3'>
                   <CornerOrnament inset='0.25rem' size='0.5rem' thickness='2px' />
                   <p className='relative z-10 text-sm font-bold uppercase tracking-[0.2em] text-black'>
-                    Excelencia Pirotécnica
+                    {hero.eyebrow}
                   </p>
                 </div>
                 <h1 className='font-heading whitespace-nowrap text-[3.375rem] font-black leading-tight tracking-tight text-black md:text-[3.9375rem]'>
-                  FAVIO FAVIO DOMINÓ
+                  {hero.title}
                 </h1>
                 <p className='max-w-lg text-2xl font-bold leading-tight text-black md:text-3xl'>
-                  Pólvora y Pirotecnia Premium para Colombia
+                  {hero.subtitle}
                 </p>
               </div>
               <p className='max-w-lg text-lg font-semibold leading-relaxed text-black'>
-                La fuente más confiable para espectáculos pirotécnicos
-                profesionales. Certificados seguros, elaborados por expertos,
-                inolvidablemente espectaculares.
+                {hero.description}
               </p>
               <div className='flex flex-col gap-4 pt-4 sm:flex-row'>
                 <Link
-                  href='/products'
+                  href={hero.primaryCtaHref}
                   className='inline-block rounded-none border-4 border-black bg-black px-8 py-4 text-center text-lg font-black uppercase tracking-wider text-primary transition-colors hover:bg-primary hover:text-black'
                 >
-                  Ver Colección
+                  {hero.primaryCtaLabel}
                 </Link>
                 <Link
-                  href='/events'
+                  href={hero.secondaryCtaHref}
                   className='inline-block rounded-none border-4 border-black bg-primary px-8 py-4 text-center text-lg font-black uppercase tracking-wider text-black transition-colors hover:bg-black hover:text-primary'
                 >
-                  Ver Eventos
+                  {hero.secondaryCtaLabel}
                 </Link>
               </div>
               <div className='flex gap-8 pt-8'>
@@ -106,66 +255,77 @@ export default function Home() {
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='mb-16 text-center'>
             <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
-              Colección Destacada
+              {featuredHeading}
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>
-              Productos pirotécnicos premium cuidadosamente seleccionados
-            </p>
+            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{featuredSubheading}</p>
           </div>
 
           <div className='grid gap-8 md:grid-cols-3'>
-            {[
-              { name: 'Fuego de Dragón Elite', badge: 'Nuevo Lanzamiento' },
-              { name: 'Estallido Celestial Premium', badge: 'Más Vendido' },
-              { name: 'Serie Oro Imperial', badge: 'Limitado' },
-            ].map((product) => (
-              <div
-                key={product.name}
-                className='relative border-[6px] border-black bg-primary p-8 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
-              >
-                <CornerOrnament inset='0.75rem' size='2rem' thickness='2px' variant='intricate' />
-                <div className='relative mb-6 flex h-64 items-center justify-center overflow-hidden bg-black'>
-                  <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' className='[&_span]:bg-accent' />
-                  <div className='relative z-10 space-y-2 text-center'>
-                    <Sparkles className='mx-auto h-16 w-16 text-accent' />
-                    <p className='text-lg font-black text-white'>
-                      {product.name}
-                    </p>
-                  </div>
-                  <div className='absolute -top-1 -right-1 border-2 border-accent bg-black px-4 py-2 text-sm font-black text-accent'>
-                    {product.badge}
-                  </div>
-                </div>
-
-                <div className='space-y-4'>
-                  <h3 className='text-2xl font-black text-black'>
-                    {product.name}
-                  </h3>
-                  <p className='text-sm font-semibold leading-relaxed text-black'>
-                    Kit de exhibición pirotécnica de grado profesional con
-                    características de seguridad certificadas e instrucciones expertas.
-                  </p>
-                  <div className='flex items-center justify-between border-t-2 border-black pt-4'>
-                    <div className='flex gap-1'>
-                      {Array.from({ length: 5 }).map((_, index) => (
-                        <Star
-                          key={index}
-                          className='h-5 w-5 text-accent'
-                          fill='currentColor'
+            {featuredProducts.map((product: any) => {
+              const productImage = getMediaUrl(product?.image);
+              const rating = Math.round(product?.rating ?? 5);
+              return (
+                <div
+                  key={product?.id || product?.name}
+                  className='relative border-[6px] border-black bg-primary p-8 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
+                >
+                  <CornerOrnament inset='0.75rem' size='2rem' thickness='2px' variant='intricate' />
+                  <div className='relative mb-6 flex h-64 items-center justify-center overflow-hidden bg-black'>
+                    <CornerOrnament
+                      inset='0.5rem'
+                      size='1.25rem'
+                      thickness='2px'
+                      className='[&_span]:bg-accent'
+                    />
+                    <div className='relative z-10 space-y-2 text-center'>
+                      {productImage ? (
+                        <Image
+                          src={productImage}
+                          alt={product?.name || 'Producto destacado'}
+                          width={300}
+                          height={250}
+                          className='mx-auto h-40 w-auto object-cover'
                         />
-                      ))}
+                      ) : (
+                        <Sparkles className='mx-auto h-16 w-16 text-accent' />
+                      )}
+                      <p className='text-lg font-black text-white'>{product?.name}</p>
                     </div>
-                    <span className='text-xs font-black text-black'>(48)</span>
+                    {product?.badge ? (
+                      <div className='absolute -top-1 -right-1 border-2 border-accent bg-black px-4 py-2 text-sm font-black text-accent'>
+                        {product.badge}
+                      </div>
+                    ) : null}
                   </div>
-                  <Link
-                    href='/products'
-                    className='mt-4 block w-full rounded-none border-[3px] border-black bg-black px-4 py-3 text-center text-sm font-black uppercase tracking-wider text-primary transition-colors hover:bg-primary hover:text-black'
-                  >
-                    Ver Detalles
-                  </Link>
+
+                  <div className='space-y-4'>
+                    <h3 className='text-2xl font-black text-black'>{product?.name}</h3>
+                    <p className='text-sm font-semibold leading-relaxed text-black'>
+                      {product?.description ??
+                        'Producto pirotécnico de calidad premium listo para impresionar en tus eventos.'}
+                    </p>
+                    <div className='flex items-center justify-between border-t-2 border-black pt-4'>
+                      <div className='flex gap-1'>
+                        {Array.from({ length: 5 }).map((_, index) => (
+                          <Star
+                            key={index}
+                            className='h-5 w-5 text-accent'
+                            fill={index < rating ? 'currentColor' : 'none'}
+                          />
+                        ))}
+                      </div>
+                      <span className='text-xs font-black text-black'>{product?.badge ?? ''}</span>
+                    </div>
+                    <Link
+                      href='/products'
+                      className='mt-4 block w-full rounded-none border-[3px] border-black bg-black px-4 py-3 text-center text-sm font-black uppercase tracking-wider text-primary transition-colors hover:bg-primary hover:text-black'
+                    >
+                      Ver Detalles
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className='mt-16 text-center'>
@@ -188,12 +348,7 @@ export default function Home() {
 
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='grid gap-8 text-center md:grid-cols-4'>
-            {[
-              { value: '5,000+', label: 'Productos Vendidos' },
-              { value: '98%', label: 'Satisfacción' },
-              { value: '25+', label: 'Años de Experiencia' },
-              { value: '50+', label: 'Ubicaciones' },
-            ].map((stat) => (
+            {stats.map((stat: any) => (
               <div
                 key={stat.label}
                 className='relative space-y-2 border-4 border-black bg-white p-6'
@@ -227,39 +382,26 @@ export default function Home() {
           </div>
 
           <div className='grid gap-8 md:grid-cols-3'>
-            {[
-              {
-                icon: Shield,
-                title: 'Certificado Seguro',
-                desc: 'Todos los productos cumplen con estándares internacionales de seguridad',
-              },
-              {
-                icon: Users,
-                title: 'Equipo Experto',
-                desc: 'Profesionales listos para ayudar con tus necesidades',
-              },
-              {
-                icon: Zap,
-                title: 'Entrega Rápida',
-                desc: 'Entrega nacional con manejo profesional',
-              },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div
-                key={title}
-                className='relative border-4 border-black bg-primary p-8'
-              >
-                <CornerOrnament inset='0.75rem' size='1.5rem' thickness='2px' variant='intricate' />
-                <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-black'>
-                  <Icon className='h-8 w-8 text-accent' />
+            {reasons.map((reason: any) => {
+              const Icon = ICONS[(reason?.icon as keyof typeof ICONS) ?? 'shield'] ?? Shield;
+              return (
+                <div
+                  key={reason?.title}
+                  className='relative border-4 border-black bg-primary p-8'
+                >
+                  <CornerOrnament inset='0.75rem' size='1.5rem' thickness='2px' variant='intricate' />
+                  <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-black'>
+                    <Icon className='h-8 w-8 text-accent' />
+                  </div>
+                  <h3 className='mb-2 text-center text-2xl font-black text-black'>
+                    {reason?.title}
+                  </h3>
+                  <p className='text-center text-sm font-semibold text-black'>
+                    {reason?.description}
+                  </p>
                 </div>
-                <h3 className='mb-2 text-center text-2xl font-black text-black'>
-                  {title}
-                </h3>
-                <p className='text-center text-sm font-semibold text-black'>
-                  {desc}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -274,42 +416,47 @@ export default function Home() {
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='mb-16 text-center'>
             <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
-              Próximos Eventos
+              {eventsHeading}
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>
-              Espectáculos impresionantes en toda Colombia
-            </p>
+            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{eventsSubheading}</p>
           </div>
 
           <div className='mb-8 grid gap-8 md:grid-cols-3'>
-            {Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className='relative border-4 border-black bg-white p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
-              >
-                <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
-                <div className='mb-4 flex items-center gap-3'>
-                  <div className='flex h-12 w-12 items-center justify-center border-2 border-black bg-primary'>
-                    <Sparkles className='h-6 w-6 text-black' />
-                  </div>
-                  <div>
-                    <p className='text-xs font-black uppercase text-black'>
-                      Dic {15 + (index + 1) * 5}
-                    </p>
-                    <p className='font-black text-black'>Evento {index + 1}</p>
-                  </div>
-                </div>
-                <p className='mb-4 text-sm font-semibold text-black'>
-                  Exhibición pirotécnica profesional con sincronización musical.
-                </p>
-                <Link
-                  href='/events'
-                  className='text-sm font-black uppercase tracking-wider text-black transition-colors hover:text-primary'
+            {(events.length ? events : Array.from({ length: 3 })).map((event: any, index) => {
+              const dateLabel = event?.date ? dayjs(event.date).format('DD') : `0${index + 1}`;
+              const monthLabel = event?.date ? dayjs(event.date).format('MMM') : 'Próx';
+              return (
+                <div
+                  key={event?.id || index}
+                  className='relative border-4 border-black bg-white p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
                 >
-                  Más Información →
-                </Link>
-              </div>
-            ))}
+                  <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
+                  <div className='mb-4 flex items-center gap-3'>
+                    <div className='flex h-12 w-12 items-center justify-center border-2 border-black bg-primary'>
+                      <Sparkles className='h-6 w-6 text-black' />
+                    </div>
+                    <div>
+                      <p className='text-xs font-black uppercase text-black'>
+                        {monthLabel} {dateLabel}
+                      </p>
+                      <p className='font-black text-black'>
+                        {event?.title ?? `Evento ${index + 1}`}
+                      </p>
+                    </div>
+                  </div>
+                  <p className='mb-4 text-sm font-semibold text-black'>
+                    {event?.description ??
+                      'Exhibición pirotécnica profesional con sincronización musical.'}
+                  </p>
+                  <Link
+                    href={event?.ctaUrl || '/events'}
+                    className='text-sm font-black uppercase tracking-wider text-black transition-colors hover:text-primary'
+                  >
+                    {event?.ctaLabel ?? 'Más Información →'}
+                  </Link>
+                </div>
+              );
+            })}
           </div>
 
           <div className='text-center'>
@@ -333,16 +480,14 @@ export default function Home() {
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='mb-16 text-center'>
             <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
-              Visítanos
+              {locationsHeading}
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>
-              Salas de exhibición profesionales en todo el país
-            </p>
+            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{locationsSubheading}</p>
           </div>
 
           <div className='mb-16'>
             <Image
-              src='/store_bg.png'
+              src={locationsHero}
               alt='Exhibición Premium de Pólvora'
               width={1200}
               height={800}
@@ -352,27 +497,35 @@ export default function Home() {
           </div>
 
           <div className='grid gap-8 md:grid-cols-3'>
-            {['Bogotá', 'Medellín', 'Cali'].map((city) => (
-              <div
-                key={city}
-                className='relative border-4 border-black bg-white p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
-              >
-                <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
-                <div className='mb-4 flex items-center gap-3'>
-                  <MapPin className='h-6 w-6 text-primary' />
-                  <h3 className='text-2xl font-black text-black'>{city}</h3>
-                </div>
-                <p className='mb-4 text-sm font-semibold text-black'>
-                  Sala de exhibición profesional y centro de atención al cliente
-                </p>
-                <Link
-                  href='/locations'
-                  className='text-sm font-black uppercase tracking-wider text-primary transition-colors hover:text-black'
+            {(locations.length ? locations : ['Bogotá', 'Medellín', 'Cali']).map(
+              (location: any) => (
+                <div
+                  key={location?.id || location}
+                  className='relative border-4 border-black bg-white p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
                 >
-                  Ver Detalles →
-                </Link>
-              </div>
-            ))}
+                  <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
+                  <div className='mb-4 flex items-center gap-3'>
+                    <MapPin className='h-6 w-6 text-primary' />
+                    <h3 className='text-2xl font-black text-black'>
+                      {location?.city ?? location}
+                    </h3>
+                  </div>
+                  <p className='mb-4 text-sm font-semibold text-black'>
+                    {location?.description ??
+                      'Sala de exhibición profesional y centro de atención al cliente'}
+                  </p>
+                  <p className='text-sm font-semibold text-black'>{location?.address ?? ''}</p>
+                  <p className='text-sm font-semibold text-black'>{location?.phone ?? ''}</p>
+                  <p className='text-xs font-semibold text-black/80'>{location?.hours ?? ''}</p>
+                  <Link
+                    href={location?.mapUrl || '/locations'}
+                    className='mt-4 inline-block text-sm font-black uppercase tracking-wider text-primary transition-colors hover:text-black'
+                  >
+                    Ver Detalles →
+                  </Link>
+                </div>
+              ),
+            )}
           </div>
 
           <div className='mt-16 text-center'>
@@ -396,42 +549,54 @@ export default function Home() {
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='mb-16 text-center'>
             <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
-              Lo Que Dicen Nuestros Clientes
+              {testimonialsHeading}
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>
-              Confiado por profesionales en toda Colombia
-            </p>
+            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{testimonialsSubheading}</p>
           </div>
 
           <div className='grid gap-8 md:grid-cols-3'>
-            {Array.from({ length: 3 }).map((_, index) => (
-              <div
-                key={index}
-                className='relative border-4 border-black bg-white p-8'
-              >
-                <CornerOrnament inset='0.75rem' size='1.5rem' thickness='2px' variant='intricate' />
-                <div className='relative z-10 mb-4 flex gap-1'>
-                  {Array.from({ length: 5 }).map((_, starIndex) => (
-                    <Star
-                      key={starIndex}
-                      className='h-5 w-5 text-accent'
-                      fill='currentColor'
+            {(testimonials.length ? testimonials : Array.from({ length: 3 })).map(
+              (testimonial: any, index) => {
+                const rating = Math.round(testimonial?.rating ?? 5);
+                return (
+                  <div
+                    key={testimonial?.id || index}
+                    className='relative border-4 border-black bg-white p-8'
+                  >
+                    <CornerOrnament
+                      inset='0.75rem'
+                      size='1.5rem'
+                      thickness='2px'
+                      variant='intricate'
                     />
-                  ))}
-                </div>
-                <p className='relative z-10 mb-6 text-sm font-semibold italic leading-relaxed text-black'>
-                  "¡Calidad y servicio excepcionales! FAVIO FAVIO DOMINÓ ha entregado
-                  consistentemente los mejores productos pirotécnicos para nuestros
-                  eventos. ¡Muy recomendado!"
-                </p>
-                <div className='relative z-10 border-t-2 border-black pt-4'>
-                  <p className='font-black text-black'>Cliente {index + 1}</p>
-                  <p className='text-xs font-bold uppercase text-black'>
-                    Compra Verificada
-                  </p>
-                </div>
-              </div>
-            ))}
+                    <div className='relative z-10 mb-4 flex gap-1'>
+                      {Array.from({ length: 5 }).map((_, starIndex) => (
+                        <Star
+                          key={starIndex}
+                          className='h-5 w-5 text-accent'
+                          fill={starIndex < rating ? 'currentColor' : 'none'}
+                        />
+                      ))}
+                    </div>
+                    <p className='relative z-10 mb-6 text-sm font-semibold italic leading-relaxed text-black'>
+                      “
+                      {testimonial?.quote ??
+                        '¡Calidad y servicio excepcionales! FAVIO FAVIO DOMINÓ ha entregado consistentemente los mejores productos pirotécnicos para nuestros eventos. ¡Muy recomendado!'}
+                      ”
+                    </p>
+                    <div className='relative z-10 border-t-2 border-black pt-4'>
+                      <p className='font-black text-black'>
+                        {testimonial?.name ?? `Cliente ${index + 1}`}
+                      </p>
+                      <p className='text-xs font-bold uppercase text-black'>
+                        {testimonial?.title ? `${testimonial.title} • ` : ''}
+                        {testimonial?.city ?? 'Compra Verificada'}
+                      </p>
+                    </div>
+                  </div>
+                );
+              },
+            )}
           </div>
 
           <div className='mt-16 text-center'>
@@ -449,25 +614,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='bg-black py-16'>
-        <div className='relative container mx-auto border-8 border-primary px-4 py-20 text-center md:py-24'>
-          <CornerOrnament inset='1rem' size='2.5rem' thickness='2px' variant='intricate' className='[&_span]:bg-primary' />
-          <CornerOrnament inset='2.5rem' size='1.5rem' thickness='2px' variant='intricate' className='[&_span]:bg-primary' />
-          <CornerOrnament inset='4rem' size='1rem' thickness='2px' className='[&_span]:border-accent [&_span]:bg-transparent!' />
-          <h2 className='font-heading relative z-10 text-4xl font-black uppercase tracking-wider text-primary md:text-5xl'>
-            ¿Listo Para Encender?
-          </h2>
-          <p className='relative z-10 mx-auto mt-6 max-w-2xl text-lg font-bold text-accent'>
-            Explora nuestra colección premium y experimenta la excelencia pirotécnica.
-          </p>
-          <Link
-            href='/products'
-            className='relative z-10 mt-8 inline-block rounded-none border-4 border-primary bg-primary px-8 py-4 font-black uppercase tracking-wider text-black transition-colors hover:bg-accent'
-          >
-            Comprar Ahora
-          </Link>
-        </div>
-      </section>
+      <CTASection
+        title={cta.title}
+        body={cta.body}
+        ctaLabel={cta.primaryLabel}
+        ctaHref={cta.primaryHref}
+      />
 
       <footer className='border-t-8 border-primary bg-black py-12 text-white md:py-16'>
         <div className='container mx-auto px-4'>
@@ -484,10 +636,7 @@ export default function Home() {
               <h4 className='mb-4 font-black uppercase text-accent'>Productos</h4>
               <ul className='space-y-2 text-sm font-semibold text-white/70'>
                 <li>
-                  <Link
-                    href='/products'
-                    className='transition-colors hover:text-accent'
-                  >
+                  <Link href='/products' className='transition-colors hover:text-accent'>
                     Todos los Productos
                   </Link>
                 </li>
@@ -507,18 +656,12 @@ export default function Home() {
               <h4 className='mb-4 font-black uppercase text-accent'>Empresa</h4>
               <ul className='space-y-2 text-sm font-semibold text-white/70'>
                 <li>
-                  <Link
-                    href='/events'
-                    className='transition-colors hover:text-accent'
-                  >
+                  <Link href='/events' className='transition-colors hover:text-accent'>
                     Eventos
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href='/locations'
-                    className='transition-colors hover:text-accent'
-                  >
+                  <Link href='/locations' className='transition-colors hover:text-accent'>
                     Ubicaciones
                   </Link>
                 </li>

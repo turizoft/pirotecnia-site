@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   manifest: '/images/favicon/site.webmanifest',
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
