@@ -22,7 +22,7 @@ export function SiteHeader() {
             {[
               { href: '/', label: 'Inicio' },
               { href: '/products', label: 'Productos' },
-              { href: '/events', label: 'Eventos' },
+              // { href: '/events', label: 'Eventos' },
               { href: '/locations', label: 'Ubicaciones' },
               { href: '/testimonials', label: 'Reseñas' },
             ].map((item) => (

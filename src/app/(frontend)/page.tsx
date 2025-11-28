@@ -416,6 +416,7 @@ export default async function Home() {
         <div className='h-2 bg-black' />
       </section>
 
+      {/* Events section hidden for now
       <section className='bg-primary py-0'>
         <div className='flex h-8 items-center justify-center bg-black'>
           <DiamondRow />
@@ -482,6 +483,7 @@ export default async function Home() {
           <DiamondRow />
         </div>
       </section>
+      */}
 
       <section className='bg-white py-0'>
         <div className='h-2 bg-black' />
