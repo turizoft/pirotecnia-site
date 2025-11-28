@@ -47,52 +47,57 @@ export default async function ProductsPage() {
 
       <section className='bg-white py-20 md:py-28'>
         <div className='container mx-auto px-4'>
-          <div className='grid gap-8 md:grid-cols-3'>
-            {(products.length ? products : Array.from({ length: 6 })).map((product: any, idx) => {
-              const rating = Math.round(product?.rating ?? 5);
-              const imageUrl = getMediaUrl(product?.image);
-              return (
-                <div
-                  key={product?.id || idx}
-                  className='relative border-4 border-black bg-primary p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
-                >
-                  <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
+          {products.length > 0 ? (
+            <div className='grid gap-8 md:grid-cols-3'>
+              {products.map((product: any) => {
+                const rating = Math.round(product?.rating ?? 5);
+                const imageUrl = getMediaUrl(product?.image);
+                return (
+                  <div
+                    key={product.id}
+                    className='relative border-4 border-black bg-primary p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
+                  >
+                    <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
 
-                  <div className='mb-6 flex h-48 items-center justify-center bg-black'>
-                    {imageUrl ? (
-                      <Image
-                        src={imageUrl}
-                        alt={product?.name || 'Producto'}
-                        width={300}
-                        height={220}
-                        className='h-48 w-full object-cover'
-                      />
-                    ) : (
-                      <Sparkles className='h-12 w-12 text-accent' />
-                    )}
+                    <div className='mb-6 flex h-48 items-center justify-center bg-black'>
+                      {imageUrl ? (
+                        <Image
+                          src={imageUrl}
+                          alt={product?.name || 'Producto'}
+                          width={300}
+                          height={220}
+                          className='h-48 w-full object-cover'
+                        />
+                      ) : (
+                        <Sparkles className='h-12 w-12 text-accent' />
+                      )}
+                    </div>
+                    <h3 className='mb-2 text-xl font-black text-black'>{product.name}</h3>
+                    <div className='mb-4 flex gap-1'>
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <Star
+                          key={index}
+                          className='h-4 w-4 text-accent'
+                          fill={index < rating ? 'currentColor' : 'none'}
+                        />
+                      ))}
+                    </div>
+                    <p className='mb-4 text-sm font-semibold text-black'>{product.description}</p>
+                    <button className='w-full rounded-none border-2 border-black bg-black px-4 py-2 text-xs font-black uppercase tracking-wider text-primary transition-colors hover:bg-accent hover:text-black'>
+                      Ver Detalles
+                    </button>
                   </div>
-                  <h3 className='mb-2 text-xl font-black text-black'>
-                    {product?.name ?? `Producto ${idx + 1}`}
-                  </h3>
-                  <div className='mb-4 flex gap-1'>
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <Star
-                        key={index}
-                        className='h-4 w-4 text-accent'
-                        fill={index < rating ? 'currentColor' : 'none'}
-                      />
-                    ))}
-                  </div>
-                  <p className='mb-4 text-sm font-semibold text-black'>
-                    {product?.description ?? 'Producto pirotécnico de calidad premium'}
-                  </p>
-                  <button className='w-full rounded-none border-2 border-black bg-black px-4 py-2 text-xs font-black uppercase tracking-wider text-primary transition-colors hover:bg-accent hover:text-black'>
-                    Ver Detalles
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className='py-16 text-center'>
+              <Sparkles className='mx-auto mb-4 h-16 w-16 text-primary/50' />
+              <p className='text-xl font-semibold text-gray-500'>
+                No hay productos registrados actualmente.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

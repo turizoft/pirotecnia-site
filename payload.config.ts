@@ -2,11 +2,16 @@ import path from 'path';
 import { buildConfig } from 'payload';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { sqliteAdapter } from '@payloadcms/db-sqlite';
+import { es } from '@payloadcms/translations/languages/es';
 
 const MEDIA_PATH = path.resolve(process.cwd(), 'public/media');
 
 export default buildConfig({
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:5601',
+  i18n: {
+    fallbackLanguage: 'es',
+    supportedLanguages: { es },
+  },
   admin: {
     user: 'users',
     meta: {
@@ -17,6 +22,10 @@ export default buildConfig({
   collections: [
     {
       slug: 'users',
+      labels: {
+        singular: 'Usuario',
+        plural: 'Usuarios',
+      },
       auth: true,
       admin: {
         useAsTitle: 'email',
@@ -42,6 +51,10 @@ export default buildConfig({
     },
     {
       slug: 'media',
+      labels: {
+        singular: 'Archivo',
+        plural: 'Archivos',
+      },
       admin: {
         useAsTitle: 'alt',
       },
@@ -65,6 +78,10 @@ export default buildConfig({
     },
     {
       slug: 'products',
+      labels: {
+        singular: 'Producto',
+        plural: 'Productos',
+      },
       admin: {
         useAsTitle: 'name',
         description: 'Gestiona la lista de productos y cuales aparecen destacados.',
@@ -124,6 +141,10 @@ export default buildConfig({
     },
     {
       slug: 'events',
+      labels: {
+        singular: 'Evento',
+        plural: 'Eventos',
+      },
       admin: {
         useAsTitle: 'title',
         description: 'Controla los eventos visibles en el home y la página de eventos.',
@@ -174,6 +195,10 @@ export default buildConfig({
     },
     {
       slug: 'locations',
+      labels: {
+        singular: 'Ubicación',
+        plural: 'Ubicaciones',
+      },
       admin: {
         useAsTitle: 'city',
         description: 'Administra las salas de exhibición y datos de contacto.',
@@ -215,6 +240,10 @@ export default buildConfig({
     },
     {
       slug: 'testimonials',
+      labels: {
+        singular: 'Testimonio',
+        plural: 'Testimonios',
+      },
       admin: {
         useAsTitle: 'name',
         description: 'Reseñas que aparecen en el home y página de reseñas.',
@@ -262,7 +291,7 @@ export default buildConfig({
   globals: [
     {
       slug: 'homepage',
-      label: 'Home',
+      label: 'Página Principal',
       fields: [
         {
           name: 'hero',

@@ -127,8 +127,8 @@ export default async function Home() {
     featuredProductsFromGlobal.filter(Boolean).length > 0
       ? featuredProductsFromGlobal.filter(Boolean)
       : featuredRes?.docs?.length
-      ? featuredRes.docs
-      : allProducts.slice(0, 3);
+        ? featuredRes.docs
+        : allProducts.slice(0, 3);
 
   const stats = (home as any)?.stats?.length ? (home as any).stats : DEFAULT_STATS;
   const reasons = (home as any)?.reasons?.length ? (home as any).reasons : DEFAULT_REASONS;
@@ -188,9 +188,9 @@ export default async function Home() {
           <source src={hero.videoUrl} type='video/mp4' />
         </video>
         <div
-          className='absolute inset-0'
+          className='absolute inset-0 opacity-25'
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='2' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='2' height='2' fill='rgba(255,255,255,0.25)'/%3E%3Ccircle cx='0.5' cy='0.5' r='0.5' fill='%23BA182F'/%3E%3C/svg%3E")`,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='2' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='2' height='2' fill='rgba(255,255,255,0.75)'/%3E%3Ccircle cx='0.5' cy='0.5' r='0.5' fill='%23BA182F'/%3E%3C/svg%3E")`,
             backgroundSize: '2px 2px',
             backgroundRepeat: 'repeat',
           }}
@@ -200,20 +200,19 @@ export default async function Home() {
           <div className='grid items-center gap-12 md:grid-cols-2'>
             <div className='space-y-8'>
               <div className='space-y-6'>
-                <div className='relative inline-block rounded-none border-2 border-black px-6 py-3'>
-                  <CornerOrnament inset='0.25rem' size='0.5rem' thickness='2px' />
-                  <p className='relative z-10 text-sm font-bold uppercase tracking-[0.2em] text-black'>
+                <div className='relative inline-block rounded-none border-2 border-white px-6 py-3'>
+                  <p className='relative z-10 text-sm font-bold uppercase tracking-[0.2em] text-white text-shadow-outline-black-sm'>
                     {hero.eyebrow}
                   </p>
                 </div>
-                <h1 className='font-heading whitespace-nowrap text-[3.375rem] font-black leading-tight tracking-tight text-black md:text-[3.9375rem]'>
+                <h1 className='font-heading whitespace-nowrap text-[3.375rem] font-black leading-tight tracking-tight text-black text-shadow-outline md:text-[3.9375rem]'>
                   {hero.title}
                 </h1>
-                <p className='max-w-lg text-2xl font-bold leading-tight text-black md:text-3xl'>
+                <p className='max-w-lg text-2xl font-bold leading-tight text-black text-shadow-outline-sm md:text-3xl'>
                   {hero.subtitle}
                 </p>
               </div>
-              <p className='max-w-lg text-lg font-semibold leading-relaxed text-black'>
+              <p className='max-w-lg text-lg font-semibold leading-relaxed text-black text-shadow-outline-sm'>
                 {hero.description}
               </p>
               <div className='flex flex-col gap-4 pt-4 sm:flex-row'>
@@ -232,12 +231,12 @@ export default async function Home() {
               </div>
               <div className='flex gap-8 pt-8'>
                 <div className='flex items-center gap-2'>
-                  <Shield className='h-6 w-6 text-black' />
-                  <span className='text-sm font-bold text-black'>100% Seguro</span>
+                  <Shield className='h-6 w-6 text-white drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]' />
+                  <span className='text-sm font-bold text-white text-shadow-outline-black-sm'>100% Seguro</span>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <Star className='h-6 w-6 text-black' />
-                  <span className='text-sm font-bold text-black'>Mejor Calificado</span>
+                  <Star className='h-6 w-6 text-white drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]' />
+                  <span className='text-sm font-bold text-white text-shadow-outline-black-sm'>Mejor Calificado</span>
                 </div>
               </div>
             </div>
@@ -260,73 +259,82 @@ export default async function Home() {
             <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{featuredSubheading}</p>
           </div>
 
-          <div className='grid gap-8 md:grid-cols-3'>
-            {featuredProducts.map((product: any) => {
-              const productImage = getMediaUrl(product?.image);
-              const rating = Math.round(product?.rating ?? 5);
-              return (
-                <div
-                  key={product?.id || product?.name}
-                  className='relative border-[6px] border-black bg-primary p-8 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
-                >
-                  <CornerOrnament inset='0.75rem' size='2rem' thickness='2px' variant='intricate' />
-                  <div className='relative mb-6 flex h-64 items-center justify-center overflow-hidden bg-black'>
-                    <CornerOrnament
-                      inset='0.5rem'
-                      size='1.25rem'
-                      thickness='2px'
-                      className='[&_span]:bg-accent'
-                    />
-                    <div className='relative z-10 space-y-2 text-center'>
-                      {productImage ? (
-                        <Image
-                          src={productImage}
-                          alt={product?.name || 'Producto destacado'}
-                          width={300}
-                          height={250}
-                          className='mx-auto h-40 w-auto object-cover'
-                        />
-                      ) : (
-                        <Sparkles className='mx-auto h-16 w-16 text-accent' />
-                      )}
-                      <p className='text-lg font-black text-white'>{product?.name}</p>
-                    </div>
-                    {product?.badge ? (
-                      <div className='absolute -top-1 -right-1 border-2 border-accent bg-black px-4 py-2 text-sm font-black text-accent'>
-                        {product.badge}
-                      </div>
-                    ) : null}
-                  </div>
-
-                  <div className='space-y-4'>
-                    <h3 className='text-2xl font-black text-black'>{product?.name}</h3>
-                    <p className='text-sm font-semibold leading-relaxed text-black'>
-                      {product?.description ??
-                        'Producto pirotécnico de calidad premium listo para impresionar en tus eventos.'}
-                    </p>
-                    <div className='flex items-center justify-between border-t-2 border-black pt-4'>
-                      <div className='flex gap-1'>
-                        {Array.from({ length: 5 }).map((_, index) => (
-                          <Star
-                            key={index}
-                            className='h-5 w-5 text-accent'
-                            fill={index < rating ? 'currentColor' : 'none'}
+          {featuredProducts.length > 0 ? (
+            <div className='grid gap-8 md:grid-cols-3'>
+              {featuredProducts.map((product: any) => {
+                const productImage = getMediaUrl(product?.image);
+                const rating = Math.round(product?.rating ?? 5);
+                return (
+                  <div
+                    key={product.id}
+                    className='relative border-[6px] border-black bg-primary p-8 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
+                  >
+                    <CornerOrnament inset='0.75rem' size='2rem' thickness='2px' variant='intricate' />
+                    <div className='relative mb-6 flex h-64 items-center justify-center overflow-hidden bg-black'>
+                      <CornerOrnament
+                        inset='0.5rem'
+                        size='1.25rem'
+                        thickness='2px'
+                        className='[&_span]:bg-accent'
+                      />
+                      <div className='relative z-10 space-y-2 text-center'>
+                        {productImage ? (
+                          <Image
+                            src={productImage}
+                            alt={product.name}
+                            width={300}
+                            height={250}
+                            className='mx-auto h-40 w-auto object-cover'
                           />
-                        ))}
+                        ) : (
+                          <Sparkles className='mx-auto h-16 w-16 text-accent' />
+                        )}
+                        <p className='text-lg font-black text-white'>{product.name}</p>
                       </div>
-                      <span className='text-xs font-black text-black'>{product?.badge ?? ''}</span>
+                      {product.badge && (
+                        <div className='absolute -top-1 -right-1 border-2 border-accent bg-black px-4 py-2 text-sm font-black text-accent'>
+                          {product.badge}
+                        </div>
+                      )}
                     </div>
-                    <Link
-                      href='/products'
-                      className='mt-4 block w-full rounded-none border-[3px] border-black bg-black px-4 py-3 text-center text-sm font-black uppercase tracking-wider text-primary transition-colors hover:bg-primary hover:text-black'
-                    >
-                      Ver Detalles
-                    </Link>
+
+                    <div className='space-y-4'>
+                      <h3 className='text-2xl font-black text-black'>{product.name}</h3>
+                      {product.description && (
+                        <p className='text-sm font-semibold leading-relaxed text-black'>
+                          {product.description}
+                        </p>
+                      )}
+                      <div className='flex items-center justify-between border-t-2 border-black pt-4'>
+                        <div className='flex gap-1'>
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <Star
+                              key={index}
+                              className='h-5 w-5 text-accent'
+                              fill={index < rating ? 'currentColor' : 'none'}
+                            />
+                          ))}
+                        </div>
+                        {product.badge && (
+                          <span className='text-xs font-black text-black'>{product.badge}</span>
+                        )}
+                      </div>
+                      <Link
+                        href='/products'
+                        className='mt-4 block w-full rounded-none border-[3px] border-black bg-black px-4 py-3 text-center text-sm font-black uppercase tracking-wider text-primary transition-colors hover:bg-primary hover:text-black'
+                      >
+                        Ver Detalles
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className='text-center text-lg font-semibold text-black/60'>
+              No hay productos destacados actualmente.
+            </p>
+          )}
 
           <div className='mt-16 text-center'>
             <Link
@@ -421,43 +429,44 @@ export default async function Home() {
             <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{eventsSubheading}</p>
           </div>
 
-          <div className='mb-8 grid gap-8 md:grid-cols-3'>
-            {(events.length ? events : Array.from({ length: 3 })).map((event: any, index) => {
-              const dateLabel = event?.date ? dayjs(event.date).format('DD') : `0${index + 1}`;
-              const monthLabel = event?.date ? dayjs(event.date).format('MMM') : 'Próx';
-              return (
-                <div
-                  key={event?.id || index}
-                  className='relative border-4 border-black bg-white p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
-                >
-                  <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
-                  <div className='mb-4 flex items-center gap-3'>
-                    <div className='flex h-12 w-12 items-center justify-center border-2 border-black bg-primary'>
-                      <Sparkles className='h-6 w-6 text-black' />
-                    </div>
-                    <div>
-                      <p className='text-xs font-black uppercase text-black'>
-                        {monthLabel} {dateLabel}
-                      </p>
-                      <p className='font-black text-black'>
-                        {event?.title ?? `Evento ${index + 1}`}
-                      </p>
-                    </div>
-                  </div>
-                  <p className='mb-4 text-sm font-semibold text-black'>
-                    {event?.description ??
-                      'Exhibición pirotécnica profesional con sincronización musical.'}
-                  </p>
-                  <Link
-                    href={event?.ctaUrl || '/events'}
-                    className='text-sm font-black uppercase tracking-wider text-black transition-colors hover:text-primary'
+          {events.length > 0 ? (
+            <div className='mb-8 grid gap-8 md:grid-cols-3'>
+              {events.map((event: any) => {
+                const dateLabel = dayjs(event.date).format('DD');
+                const monthLabel = dayjs(event.date).format('MMM');
+                return (
+                  <div
+                    key={event.id}
+                    className='relative border-4 border-black bg-white p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
                   >
-                    {event?.ctaLabel ?? 'Más Información →'}
-                  </Link>
-                </div>
-              );
-            })}
-          </div>
+                    <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
+                    <div className='mb-4 flex items-center gap-3'>
+                      <div className='flex h-12 w-12 items-center justify-center border-2 border-black bg-primary'>
+                        <Sparkles className='h-6 w-6 text-black' />
+                      </div>
+                      <div>
+                        <p className='text-xs font-black uppercase text-black'>
+                          {monthLabel} {dateLabel}
+                        </p>
+                        <p className='font-black text-black'>{event.title}</p>
+                      </div>
+                    </div>
+                    <p className='mb-4 text-sm font-semibold text-black'>{event.description}</p>
+                    <Link
+                      href={event.ctaUrl || '/events'}
+                      className='text-sm font-black uppercase tracking-wider text-black transition-colors hover:text-primary'
+                    >
+                      {event.ctaLabel || 'Más Información →'}
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className='mb-8 text-center text-lg font-semibold text-black/60'>
+              No hay eventos programados actualmente.
+            </p>
+          )}
 
           <div className='text-center'>
             <Link
@@ -496,37 +505,44 @@ export default async function Home() {
             />
           </div>
 
-          <div className='grid gap-8 md:grid-cols-3'>
-            {(locations.length ? locations : ['Bogotá', 'Medellín', 'Cali']).map(
-              (location: any) => (
+          {locations.length > 0 ? (
+            <div className='grid gap-8 md:grid-cols-3'>
+              {locations.map((location: any) => (
                 <div
-                  key={location?.id || location}
+                  key={location.id}
                   className='relative border-4 border-black bg-white p-6 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
                 >
                   <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
                   <div className='mb-4 flex items-center gap-3'>
                     <MapPin className='h-6 w-6 text-primary' />
-                    <h3 className='text-2xl font-black text-black'>
-                      {location?.city ?? location}
-                    </h3>
+                    <h3 className='text-2xl font-black text-black'>{location.city}</h3>
                   </div>
-                  <p className='mb-4 text-sm font-semibold text-black'>
-                    {location?.description ??
-                      'Sala de exhibición profesional y centro de atención al cliente'}
-                  </p>
-                  <p className='text-sm font-semibold text-black'>{location?.address ?? ''}</p>
-                  <p className='text-sm font-semibold text-black'>{location?.phone ?? ''}</p>
-                  <p className='text-xs font-semibold text-black/80'>{location?.hours ?? ''}</p>
+                  {location.description && (
+                    <p className='mb-4 text-sm font-semibold text-black'>{location.description}</p>
+                  )}
+                  {location.address && (
+                    <p className='text-sm font-semibold text-black'>{location.address}</p>
+                  )}
+                  {location.phone && (
+                    <p className='text-sm font-semibold text-black'>{location.phone}</p>
+                  )}
+                  {location.hours && (
+                    <p className='text-xs font-semibold text-black/80'>{location.hours}</p>
+                  )}
                   <Link
-                    href={location?.mapUrl || '/locations'}
+                    href={location.mapUrl || '/locations'}
                     className='mt-4 inline-block text-sm font-black uppercase tracking-wider text-primary transition-colors hover:text-black'
                   >
                     Ver Detalles →
                   </Link>
                 </div>
-              ),
-            )}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className='text-center text-lg font-semibold text-black/60'>
+              No hay ubicaciones registradas actualmente.
+            </p>
+          )}
 
           <div className='mt-16 text-center'>
             <Link
@@ -554,13 +570,13 @@ export default async function Home() {
             <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{testimonialsSubheading}</p>
           </div>
 
-          <div className='grid gap-8 md:grid-cols-3'>
-            {(testimonials.length ? testimonials : Array.from({ length: 3 })).map(
-              (testimonial: any, index) => {
-                const rating = Math.round(testimonial?.rating ?? 5);
+          {testimonials.length > 0 ? (
+            <div className='grid gap-8 md:grid-cols-3'>
+              {testimonials.map((testimonial: any) => {
+                const rating = Math.round(testimonial.rating ?? 5);
                 return (
                   <div
-                    key={testimonial?.id || index}
+                    key={testimonial.id}
                     className='relative border-4 border-black bg-white p-8'
                   >
                     <CornerOrnament
@@ -579,25 +595,24 @@ export default async function Home() {
                       ))}
                     </div>
                     <p className='relative z-10 mb-6 text-sm font-semibold italic leading-relaxed text-black'>
-                      “
-                      {testimonial?.quote ??
-                        '¡Calidad y servicio excepcionales! FAVIO FAVIO DOMINÓ ha entregado consistentemente los mejores productos pirotécnicos para nuestros eventos. ¡Muy recomendado!'}
-                      ”
+                      "{testimonial.quote}"
                     </p>
                     <div className='relative z-10 border-t-2 border-black pt-4'>
-                      <p className='font-black text-black'>
-                        {testimonial?.name ?? `Cliente ${index + 1}`}
-                      </p>
+                      <p className='font-black text-black'>{testimonial.name}</p>
                       <p className='text-xs font-bold uppercase text-black'>
-                        {testimonial?.title ? `${testimonial.title} • ` : ''}
-                        {testimonial?.city ?? 'Compra Verificada'}
+                        {testimonial.title ? `${testimonial.title} • ` : ''}
+                        {testimonial.city || (testimonial.verified ? 'Compra Verificada' : '')}
                       </p>
                     </div>
                   </div>
                 );
-              },
-            )}
-          </div>
+              })}
+            </div>
+          ) : (
+            <p className='text-center text-lg font-semibold text-black/60'>
+              No hay testimonios registrados actualmente.
+            </p>
+          )}
 
           <div className='mt-16 text-center'>
             <Link

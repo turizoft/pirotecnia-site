@@ -42,39 +42,43 @@ export default async function EventsPage() {
 
       <section className='bg-white py-20 md:py-28'>
         <div className='container mx-auto px-4'>
-          <div className='mb-12 space-y-6'>
-            {(events.length ? events : Array.from({ length: 4 })).map((event: any, index) => {
-              const dateLabel = event?.date ? dayjs(event.date).format('DD') : `0${index + 1}`;
-              const monthLabel = event?.date ? dayjs(event.date).format('MMM') : 'Próx';
-              return (
-                <div
-                  key={event?.id || index}
-                  className='relative flex items-start gap-6 border-4 border-black bg-primary p-8 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
-                >
-                  <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
-                  <div className='relative z-10 flex flex-shrink-0 flex-col items-center justify-center gap-2 border-2 border-black bg-black px-4 py-3 text-center'>
-                    <p className='text-4xl font-black text-accent'>{dateLabel}</p>
-                    <p className='text-xs font-black uppercase text-accent'>{monthLabel}</p>
+          {events.length > 0 ? (
+            <div className='mb-12 space-y-6'>
+              {events.map((event: any) => {
+                const dateLabel = dayjs(event.date).format('DD');
+                const monthLabel = dayjs(event.date).format('MMM');
+                return (
+                  <div
+                    key={event.id}
+                    className='relative flex items-start gap-6 border-4 border-black bg-primary p-8 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
+                  >
+                    <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
+                    <div className='relative z-10 flex flex-shrink-0 flex-col items-center justify-center gap-2 border-2 border-black bg-black px-4 py-3 text-center'>
+                      <p className='text-4xl font-black text-accent'>{dateLabel}</p>
+                      <p className='text-xs font-black uppercase text-accent'>{monthLabel}</p>
+                    </div>
+                    <div className='relative z-10 flex-grow space-y-3'>
+                      <h3 className='text-2xl font-black uppercase text-black'>{event.title}</h3>
+                      <p className='text-sm font-semibold text-black'>{event.description}</p>
+                      <Link
+                        href={event.ctaUrl || '/events'}
+                        className='inline-block rounded-none border-2 border-black bg-black px-6 py-2 text-xs font-black uppercase tracking-wider text-primary transition-colors hover:bg-accent hover:text-black'
+                      >
+                        {event.ctaLabel ?? 'Más Información'}
+                      </Link>
+                    </div>
                   </div>
-                  <div className='relative z-10 flex-grow space-y-3'>
-                    <h3 className='text-2xl font-black uppercase text-black'>
-                      {event?.title ?? `Evento ${index + 1}`}
-                    </h3>
-                    <p className='text-sm font-semibold text-black'>
-                      {event?.description ??
-                        'Exhibición profesional de fuegos artificiales con música sincronizada y efectos especiales. ¡Todas las edades bienvenidas!'}
-                    </p>
-                    <Link
-                      href={event?.ctaUrl || '/events'}
-                      className='inline-block rounded-none border-2 border-black bg-black px-6 py-2 text-xs font-black uppercase tracking-wider text-primary transition-colors hover:bg-accent hover:text-black'
-                    >
-                      {event?.ctaLabel ?? 'Más Información'}
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className='py-16 text-center'>
+              <Sparkles className='mx-auto mb-4 h-16 w-16 text-primary/50' />
+              <p className='text-xl font-semibold text-gray-500'>
+                No hay eventos programados actualmente.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Star } from 'lucide-react';
 
 import { CornerOrnament } from '@/components/corner-ornament';
@@ -38,13 +37,13 @@ export default async function TestimonialsPage() {
 
       <section className='bg-white py-20 md:py-28'>
         <div className='container mx-auto px-4'>
-          <div className='mb-12 grid gap-8 md:grid-cols-2'>
-            {(testimonials.length ? testimonials : Array.from({ length: 6 })).map(
-              (testimonial: any, idx) => {
+          {testimonials.length > 0 ? (
+            <div className='mb-12 grid gap-8 md:grid-cols-2'>
+              {testimonials.map((testimonial: any) => {
                 const rating = Math.round(testimonial?.rating ?? 5);
                 return (
                   <div
-                    key={testimonial?.id || idx}
+                    key={testimonial.id}
                     className='relative border-4 border-black bg-primary p-8'
                   >
                     <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
@@ -58,25 +57,27 @@ export default async function TestimonialsPage() {
                       ))}
                     </div>
                     <p className='relative z-10 mb-6 text-sm font-semibold italic leading-relaxed text-black'>
-                      “
-                      {testimonial?.quote ??
-                        'Equipo profesional, resultados increíbles. Nuestros huéspedes quedaron impresionados con las exhibiciones pirotécnicas.'}
-                      ”
+                      "{testimonial.quote}"
                     </p>
                     <div className='relative z-10 border-t-2 border-black pt-4'>
-                      <p className='text-lg font-black uppercase text-black'>
-                        {testimonial?.name ?? `Cliente ${idx + 1}`}
-                      </p>
+                      <p className='text-lg font-black uppercase text-black'>{testimonial.name}</p>
                       <p className='text-xs font-bold uppercase text-black'>
-                        {testimonial?.title ? `${testimonial.title} • ` : ''}
-                        {testimonial?.city ?? 'Compra verificada'}
+                        {testimonial.title ? `${testimonial.title} • ` : ''}
+                        {testimonial.city}
                       </p>
                     </div>
                   </div>
                 );
-              },
-            )}
-          </div>
+              })}
+            </div>
+          ) : (
+            <div className='py-16 text-center'>
+              <Star className='mx-auto mb-4 h-16 w-16 text-primary/50' />
+              <p className='text-xl font-semibold text-gray-500'>
+                No hay testimonios registrados actualmente.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
