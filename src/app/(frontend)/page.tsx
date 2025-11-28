@@ -7,6 +7,7 @@ import { MapPin, Shield, Sparkles, Star, Users, Zap } from 'lucide-react';
 import { CornerOrnament } from '@/components/corner-ornament';
 import { CTASection } from '@/components/cta-section';
 import { SiteHeader } from '@/components/site-header';
+import { WhatsAppButton } from '@/components/whatsapp-button';
 import { getPayloadClient } from '@/lib/payload';
 import { cn } from '@/lib/utils';
 
@@ -726,6 +727,8 @@ export default async function Home() {
           </div>
         </div>
       </footer>
+
+      <WhatsAppButton phoneNumber="573001234567" />
     </div>
   );
 }
