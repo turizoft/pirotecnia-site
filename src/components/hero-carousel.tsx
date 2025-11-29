@@ -10,7 +10,7 @@ const CAROUSEL_IMAGES = [
 
 export function HeroCarousel() {
   return (
-    <div className='absolute inset-0 overflow-hidden'>
+    <div className='relative h-full w-full overflow-hidden'>
       {CAROUSEL_IMAGES.map((image, index) => (
         <div
           key={index}
@@ -22,7 +22,7 @@ export function HeroCarousel() {
             fill
             priority={index === 0}
             className='object-cover'
-            sizes='100vw'
+            sizes='50vw'
           />
         </div>
       ))}

@@ -27,10 +27,10 @@ export default async function LocationsPage() {
 
       <section className='border-b-8 border-black bg-primary py-16 md:py-20'>
         <div className='container mx-auto px-4 text-center'>
-          <h1 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
+          <h1 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-white md:text-6xl'>
             Encuentra Nuestras Ubicaciones
           </h1>
-          <p className='mx-auto max-w-2xl text-lg font-bold text-black'>
+          <p className='mx-auto max-w-2xl text-lg font-bold text-white'>
             Salas de exhibición profesionales en todo el país
           </p>
         </div>

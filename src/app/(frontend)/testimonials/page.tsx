@@ -26,10 +26,10 @@ export default async function TestimonialsPage() {
 
       <section className='border-b-8 border-black bg-primary py-16 md:py-20'>
         <div className='container mx-auto px-4 text-center'>
-          <h1 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
+          <h1 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-white md:text-6xl'>
             Reseñas de Clientes
           </h1>
-          <p className='mx-auto max-w-2xl text-lg font-bold text-black'>
+          <p className='mx-auto max-w-2xl text-lg font-bold text-white'>
             Experiencias reales de clientes satisfechos
           </p>
         </div>

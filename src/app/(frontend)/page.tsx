@@ -181,38 +181,29 @@ export default async function Home() {
     <div className='w-full bg-primary text-foreground'>
       <SiteHeader />
 
-      <section className='relative overflow-hidden bg-primary'>
-        <div className='flex h-8 items-center justify-center bg-black'>
+      <section className='relative overflow-hidden'>
+        <div className='flex h-8 items-center justify-center bg-black relative z-10'>
           <DiamondRow />
         </div>
 
-        <HeroCarousel />
-        <div
-          className='absolute inset-0 z-1 opacity-25'
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='2' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='2' height='2' fill='rgba(255,255,255,0.75)'/%3E%3Ccircle cx='0.5' cy='0.5' r='0.5' fill='%23BA182F'/%3E%3C/svg%3E")`,
-            backgroundSize: '2px 2px',
-            backgroundRepeat: 'repeat',
-          }}
-        />
-
-        <div className='container relative z-10 mx-auto px-4 py-20 md:py-32'>
-          <div className='grid items-center gap-12 md:grid-cols-2'>
-            <div className='space-y-8'>
+        <div className='flex flex-col md:flex-row'>
+          {/* Left side - Text content with white background */}
+          <div className='flex w-full flex-col justify-center bg-white px-6 py-12 md:w-1/2 md:px-12 md:py-20 lg:px-16'>
+            <div className='mx-auto max-w-xl space-y-8'>
               <div className='space-y-6'>
-                <div className='relative inline-block rounded-none border-2 border-white px-6 py-3'>
-                  <p className='relative z-10 text-sm font-bold uppercase tracking-[0.2em] text-white text-shadow-outline-black-sm'>
+                <div className='relative inline-block rounded-none border-2 border-black px-6 py-3'>
+                  <p className='relative z-10 text-sm font-bold uppercase tracking-[0.2em] text-black'>
                     {hero.eyebrow}
                   </p>
                 </div>
-                <h1 className='font-heading whitespace-nowrap text-[3.375rem] font-black leading-tight tracking-tight text-black text-shadow-outline md:text-[3.9375rem]'>
+                <h1 className='font-heading text-4xl font-black leading-tight tracking-tight text-black sm:text-5xl lg:text-6xl'>
                   {hero.title}
                 </h1>
-                <p className='max-w-lg text-2xl font-bold leading-tight text-black text-shadow-outline-sm md:text-3xl'>
+                <p className='text-xl font-bold leading-tight text-black md:text-2xl lg:text-3xl'>
                   {hero.subtitle}
                 </p>
               </div>
-              <p className='max-w-lg text-lg font-semibold leading-relaxed text-black text-shadow-outline-sm'>
+              <p className='text-base font-semibold leading-relaxed text-black/80 md:text-lg'>
                 {hero.description}
               </p>
               <div className='flex flex-col gap-4 pt-4 sm:flex-row'>
@@ -224,39 +215,42 @@ export default async function Home() {
                 </Link>
                 <Link
                   href={hero.secondaryCtaHref}
-                  className='inline-block rounded-none border-4 border-black bg-primary px-8 py-4 text-center text-lg font-black uppercase tracking-wider text-black transition-colors hover:bg-black hover:text-primary'
+                  className='inline-block rounded-none border-4 border-black bg-primary px-8 py-4 text-center text-lg font-black uppercase tracking-wider text-white transition-colors hover:bg-black hover:text-primary'
                 >
                   {hero.secondaryCtaLabel}
                 </Link>
               </div>
-              <div className='flex gap-8 pt-8'>
+              <div className='flex flex-wrap gap-6 pt-8 md:gap-8'>
                 <div className='flex items-center gap-2'>
-                  <Shield className='h-6 w-6 text-white drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]' />
-                  <span className='text-sm font-bold text-white text-shadow-outline-black-sm'>100% Seguro</span>
+                  <Shield className='h-6 w-6 text-black' />
+                  <span className='text-sm font-bold text-black'>100% Seguro</span>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <Star className='h-6 w-6 text-white drop-shadow-[1px_1px_0_rgba(0,0,0,0.25)]' />
-                  <span className='text-sm font-bold text-white text-shadow-outline-black-sm'>Mejor Calificado</span>
+                  <Star className='h-6 w-6 text-black' />
+                  <span className='text-sm font-bold text-black'>Mejor Calificado</span>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Right side - Carousel */}
+          <div className='relative h-[400px] w-full md:h-auto md:min-h-[600px] md:w-1/2'>
+            <HeroCarousel />
+          </div>
         </div>
 
-        <div className='flex h-8 items-center justify-center bg-black'>
+        <div className='flex h-8 items-center justify-center bg-black relative z-10'>
           <DiamondRow />
         </div>
       </section>
 
-      <section className='bg-white py-0'>
-        <div className='h-2 bg-black' />
-
+      <section className='bg-primary py-0'>
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='mb-16 text-center'>
-            <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
+            <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-white md:text-6xl'>
               {featuredHeading}
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{featuredSubheading}</p>
+            <p className='mx-auto max-w-2xl text-lg font-bold text-white'>{featuredSubheading}</p>
           </div>
 
           {featuredProducts.length > 0 ? (
@@ -331,7 +325,7 @@ export default async function Home() {
               })}
             </div>
           ) : (
-            <p className='text-center text-lg font-semibold text-black/60'>
+            <p className='text-center text-lg font-semibold text-white/60'>
               No hay productos destacados actualmente.
             </p>
           )}
@@ -346,13 +340,13 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className='h-2 bg-black' />
-      </section>
-
-      <section className='bg-primary py-0'>
         <div className='flex h-8 items-center justify-center bg-black'>
           <DiamondRow />
         </div>
+      </section>
+
+      <section className='bg-white py-0'>
+        <div className='h-2 bg-black' />
 
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='grid gap-8 text-center md:grid-cols-4'>
@@ -371,20 +365,20 @@ export default async function Home() {
           </div>
         </div>
 
+        <div className='h-2 bg-black' />
+      </section>
+
+      <section className='bg-primary py-0'>
         <div className='flex h-8 items-center justify-center bg-black'>
           <DiamondRow />
         </div>
-      </section>
-
-      <section className='bg-white py-0'>
-        <div className='h-2 bg-black' />
 
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='mb-16 text-center'>
-            <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
+            <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-white md:text-6xl'>
               Por Qué Escogernos
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>
+            <p className='mx-auto max-w-2xl text-lg font-bold text-white'>
               Calidad premium se encuentra con experiencia profesional
             </p>
           </div>
@@ -395,7 +389,7 @@ export default async function Home() {
               return (
                 <div
                   key={reason?.title}
-                  className='relative border-4 border-black bg-primary p-8'
+                  className='relative border-4 border-black bg-white p-8'
                 >
                   <CornerOrnament inset='0.75rem' size='1.5rem' thickness='2px' variant='intricate' />
                   <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-black'>
@@ -413,7 +407,9 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className='h-2 bg-black' />
+        <div className='flex h-8 items-center justify-center bg-black'>
+          <DiamondRow />
+        </div>
       </section>
 
       {/* Events section hidden for now
@@ -566,10 +562,10 @@ export default async function Home() {
 
         <div className='container mx-auto px-4 py-20 md:py-28'>
           <div className='mb-16 text-center'>
-            <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-black md:text-6xl'>
+            <h2 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-white md:text-6xl'>
               {testimonialsHeading}
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-bold text-black'>{testimonialsSubheading}</p>
+            <p className='mx-auto max-w-2xl text-lg font-bold text-white'>{testimonialsSubheading}</p>
           </div>
 
           {testimonials.length > 0 ? (
