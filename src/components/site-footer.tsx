@@ -41,14 +41,6 @@ export function SiteFooter() {
             <ul className='space-y-2 text-sm font-semibold text-white/70'>
               <li>
                 <Link
-                  href='/events'
-                  className='transition-colors hover:text-accent'
-                >
-                  Eventos
-                </Link>
-              </li>
-              <li>
-                <Link
                   href='/locations'
                   className='transition-colors hover:text-accent'
                 >
@@ -56,9 +48,20 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <a href='#' className='transition-colors hover:text-accent'>
+                <Link
+                  href='/testimonials'
+                  className='transition-colors hover:text-accent'
+                >
+                  Testimonios
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='/about'
+                  className='transition-colors hover:text-accent'
+                >
                   Sobre Nosotros
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -66,19 +69,28 @@ export function SiteFooter() {
             <h4 className='mb-4 font-black uppercase text-accent'>Soporte</h4>
             <ul className='space-y-2 text-sm font-semibold text-white/70'>
               <li>
-                <a href='#' className='transition-colors hover:text-accent'>
+                <Link
+                  href='/contact'
+                  className='transition-colors hover:text-accent'
+                >
                   Contacto
-                </a>
+                </Link>
               </li>
               <li>
-                <a href='#' className='transition-colors hover:text-accent'>
+                <Link
+                  href='/faq'
+                  className='transition-colors hover:text-accent'
+                >
                   Preguntas Frecuentes
-                </a>
+                </Link>
               </li>
               <li>
-                <a href='#' className='transition-colors hover:text-accent'>
+                <Link
+                  href='/safety'
+                  className='transition-colors hover:text-accent'
+                >
                   Información de Seguridad
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -88,12 +100,12 @@ export function SiteFooter() {
           <div className='flex flex-col items-center justify-between gap-4 text-sm font-semibold text-white/60 md:flex-row'>
             <p>© 2024 FAVIO FAVIO DOMINÓ. Todos los derechos reservados.</p>
             <div className='flex gap-6'>
-              <a href='#' className='transition-colors hover:text-accent'>
+              <Link href='/privacy' className='transition-colors hover:text-accent'>
                 Política de Privacidad
-              </a>
-              <a href='#' className='transition-colors hover:text-accent'>
+              </Link>
+              <Link href='/terms' className='transition-colors hover:text-accent'>
                 Términos de Servicio
-              </a>
+              </Link>
             </div>
           </div>
         </div>

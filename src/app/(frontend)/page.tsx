@@ -6,6 +6,7 @@ import { MapPin, Shield, Sparkles, Star, Users, Zap } from 'lucide-react';
 
 import { CornerOrnament } from '@/components/corner-ornament';
 import { CTASection } from '@/components/cta-section';
+import { HeroCarousel } from '@/components/hero-carousel';
 import { SiteHeader } from '@/components/site-header';
 import { WhatsAppButton } from '@/components/whatsapp-button';
 import { getPayloadClient } from '@/lib/payload';
@@ -162,7 +163,7 @@ export default async function Home() {
   const locationsHeading = (home as any)?.locationsSection?.heading ?? 'Visítanos';
   const locationsSubheading =
     (home as any)?.locationsSection?.subheading ?? 'Salas de exhibición profesionales en todo el país';
-  const locationsHero = getMediaUrl((home as any)?.locationsSection?.heroImage) || '/store_bg.png';
+  const locationsHero = getMediaUrl((home as any)?.locationsSection?.heroImage) || '/images/store_bg.png';
 
   const testimonialsHeading =
     (home as any)?.testimonialsSection?.heading ?? 'Lo Que Dicen Nuestros Clientes';
@@ -185,11 +186,9 @@ export default async function Home() {
           <DiamondRow />
         </div>
 
-        <video autoPlay loop muted playsInline className='absolute inset-0 h-full w-full object-cover'>
-          <source src={hero.videoUrl} type='video/mp4' />
-        </video>
+        <HeroCarousel />
         <div
-          className='absolute inset-0 opacity-25'
+          className='absolute inset-0 z-1 opacity-25'
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='2' height='2' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='2' height='2' fill='rgba(255,255,255,0.75)'/%3E%3Ccircle cx='0.5' cy='0.5' r='0.5' fill='%23BA182F'/%3E%3C/svg%3E")`,
             backgroundSize: '2px 2px',
@@ -674,19 +673,19 @@ export default async function Home() {
               <h4 className='mb-4 font-black uppercase text-accent'>Empresa</h4>
               <ul className='space-y-2 text-sm font-semibold text-white/70'>
                 <li>
-                  <Link href='/events' className='transition-colors hover:text-accent'>
-                    Eventos
-                  </Link>
-                </li>
-                <li>
                   <Link href='/locations' className='transition-colors hover:text-accent'>
                     Ubicaciones
                   </Link>
                 </li>
                 <li>
-                  <a href='#' className='transition-colors hover:text-accent'>
+                  <Link href='/testimonials' className='transition-colors hover:text-accent'>
+                    Testimonios
+                  </Link>
+                </li>
+                <li>
+                  <Link href='/about' className='transition-colors hover:text-accent'>
                     Sobre Nosotros
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -694,19 +693,19 @@ export default async function Home() {
               <h4 className='mb-4 font-black uppercase text-accent'>Soporte</h4>
               <ul className='space-y-2 text-sm font-semibold text-white/70'>
                 <li>
-                  <a href='#' className='transition-colors hover:text-accent'>
+                  <Link href='/contact' className='transition-colors hover:text-accent'>
                     Contacto
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href='#' className='transition-colors hover:text-accent'>
+                  <Link href='/faq' className='transition-colors hover:text-accent'>
                     Preguntas Frecuentes
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href='#' className='transition-colors hover:text-accent'>
+                  <Link href='/safety' className='transition-colors hover:text-accent'>
                     Información de Seguridad
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -716,12 +715,12 @@ export default async function Home() {
             <div className='flex flex-col items-center justify-between gap-4 text-sm font-semibold text-white/60 md:flex-row'>
               <p>© 2024 FAVIO FAVIO DOMINÓ. Todos los derechos reservados.</p>
               <div className='flex gap-6'>
-                <a href='#' className='transition-colors hover:text-accent'>
+                <Link href='/privacy' className='transition-colors hover:text-accent'>
                   Política de Privacidad
-                </a>
-                <a href='#' className='transition-colors hover:text-accent'>
+                </Link>
+                <Link href='/terms' className='transition-colors hover:text-accent'>
                   Términos de Servicio
-                </a>
+                </Link>
               </div>
             </div>
           </div>

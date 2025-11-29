@@ -1,6 +1,5 @@
 import path from 'path';
 import { buildConfig } from 'payload';
-import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { es } from '@payloadcms/translations/languages/es';
 
@@ -18,7 +17,6 @@ export default buildConfig({
       titleSuffix: '- Payload',
     },
   },
-  editor: lexicalEditor(),
   collections: [
     {
       slug: 'users',
@@ -289,6 +287,317 @@ export default buildConfig({
     },
   ],
   globals: [
+    {
+      slug: 'privacy',
+      label: 'Política de Privacidad',
+      fields: [
+        {
+          name: 'hero',
+          label: 'Encabezado',
+          type: 'group',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'text',
+              defaultValue: 'Política de Privacidad',
+            },
+            {
+              name: 'subtitle',
+              label: 'Subtítulo',
+              type: 'text',
+              defaultValue: 'Cómo protegemos tu información personal',
+            },
+          ],
+        },
+        {
+          name: 'content',
+          label: 'Contenido',
+          type: 'textarea',
+        },
+        {
+          name: 'lastUpdated',
+          label: 'Última actualización',
+          type: 'date',
+        },
+      ],
+    },
+    {
+      slug: 'terms',
+      label: 'Términos de Servicio',
+      fields: [
+        {
+          name: 'hero',
+          label: 'Encabezado',
+          type: 'group',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'text',
+              defaultValue: 'Términos de Servicio',
+            },
+            {
+              name: 'subtitle',
+              label: 'Subtítulo',
+              type: 'text',
+              defaultValue: 'Condiciones de uso de nuestros servicios',
+            },
+          ],
+        },
+        {
+          name: 'content',
+          label: 'Contenido',
+          type: 'textarea',
+        },
+        {
+          name: 'lastUpdated',
+          label: 'Última actualización',
+          type: 'date',
+        },
+      ],
+    },
+    {
+      slug: 'about',
+      label: 'Sobre Nosotros',
+      fields: [
+        {
+          name: 'hero',
+          label: 'Encabezado',
+          type: 'group',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'text',
+              defaultValue: 'Sobre Nosotros',
+            },
+            {
+              name: 'subtitle',
+              label: 'Subtítulo',
+              type: 'text',
+              defaultValue: 'Más de 25 años iluminando celebraciones en Colombia',
+            },
+          ],
+        },
+        {
+          name: 'content',
+          label: 'Contenido',
+          type: 'textarea',
+        },
+        {
+          name: 'sections',
+          label: 'Secciones',
+          type: 'array',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'description',
+              label: 'Descripción',
+              type: 'textarea',
+              required: true,
+            },
+            {
+              name: 'icon',
+              label: 'Icono',
+              type: 'select',
+              options: [
+                { label: 'Escudo', value: 'shield' },
+                { label: 'Estrella', value: 'star' },
+                { label: 'Usuarios', value: 'users' },
+                { label: 'Edificio', value: 'building' },
+              ],
+              defaultValue: 'shield',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      slug: 'contact',
+      label: 'Contacto',
+      fields: [
+        {
+          name: 'hero',
+          label: 'Encabezado',
+          type: 'group',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'text',
+              defaultValue: 'Contacto',
+            },
+            {
+              name: 'subtitle',
+              label: 'Subtítulo',
+              type: 'text',
+              defaultValue: 'Estamos aquí para ayudarte con tus necesidades pirotécnicas',
+            },
+          ],
+        },
+        {
+          name: 'email',
+          label: 'Correo electrónico',
+          type: 'email',
+        },
+        {
+          name: 'phone',
+          label: 'Teléfono',
+          type: 'text',
+        },
+        {
+          name: 'whatsapp',
+          label: 'WhatsApp',
+          type: 'text',
+        },
+        {
+          name: 'address',
+          label: 'Dirección',
+          type: 'textarea',
+        },
+        {
+          name: 'hours',
+          label: 'Horario de atención',
+          type: 'text',
+        },
+        {
+          name: 'socialLinks',
+          label: 'Redes Sociales',
+          type: 'array',
+          fields: [
+            {
+              name: 'platform',
+              label: 'Plataforma',
+              type: 'select',
+              options: [
+                { label: 'Facebook', value: 'facebook' },
+                { label: 'Instagram', value: 'instagram' },
+                { label: 'Twitter', value: 'twitter' },
+                { label: 'TikTok', value: 'tiktok' },
+                { label: 'YouTube', value: 'youtube' },
+              ],
+            },
+            {
+              name: 'url',
+              label: 'URL',
+              type: 'text',
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      slug: 'faq',
+      label: 'Preguntas Frecuentes',
+      fields: [
+        {
+          name: 'hero',
+          label: 'Encabezado',
+          type: 'group',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'text',
+              defaultValue: 'Preguntas Frecuentes',
+            },
+            {
+              name: 'subtitle',
+              label: 'Subtítulo',
+              type: 'text',
+              defaultValue: 'Respuestas a las dudas más comunes de nuestros clientes',
+            },
+          ],
+        },
+        {
+          name: 'questions',
+          label: 'Preguntas',
+          type: 'array',
+          fields: [
+            {
+              name: 'question',
+              label: 'Pregunta',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'answer',
+              label: 'Respuesta',
+              type: 'textarea',
+              required: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      slug: 'safety',
+      label: 'Información de Seguridad',
+      fields: [
+        {
+          name: 'hero',
+          label: 'Encabezado',
+          type: 'group',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'text',
+              defaultValue: 'Información de Seguridad',
+            },
+            {
+              name: 'subtitle',
+              label: 'Subtítulo',
+              type: 'text',
+              defaultValue: 'Tu seguridad es nuestra prioridad',
+            },
+          ],
+        },
+        {
+          name: 'content',
+          label: 'Contenido',
+          type: 'textarea',
+        },
+        {
+          name: 'guidelines',
+          label: 'Guías de Seguridad',
+          type: 'array',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'description',
+              label: 'Descripción',
+              type: 'textarea',
+              required: true,
+            },
+            {
+              name: 'icon',
+              label: 'Icono',
+              type: 'select',
+              options: [
+                { label: 'Escudo', value: 'shield' },
+                { label: 'Alerta', value: 'alert' },
+                { label: 'Check', value: 'check' },
+                { label: 'Fuego', value: 'flame' },
+              ],
+              defaultValue: 'shield',
+            },
+          ],
+        },
+      ],
+    },
     {
       slug: 'homepage',
       label: 'Página Principal',

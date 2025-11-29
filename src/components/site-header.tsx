@@ -8,7 +8,7 @@ export function SiteHeader() {
         <nav className='flex items-center justify-between gap-8'>
           <Link href='/' className='group flex items-center gap-2'>
             <Image
-              src='/logo_text.png'
+              src='/images/logo_text.png'
               alt='Logo FAVIO FAVIO DOMINÓ'
               width={150}
               height={48}
