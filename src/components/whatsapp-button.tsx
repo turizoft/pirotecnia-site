@@ -20,11 +20,11 @@ export function WhatsAppButton({
   return (
     <button
       onClick={handleClick}
-      className='fixed bottom-6 right-6 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-[#25D366] py-2 pl-5 pr-2 text-white shadow-lg transition-transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2'
+      className='group fixed bottom-6 right-6 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-[#25D366]/20 backdrop-blur-xl py-2 pl-5 pr-2 text-white shadow-[0_8px_32px_rgba(37,211,102,0.2)] ring-1 ring-[#25D366]/40 transition-all duration-300 hover:scale-105 hover:bg-[#25D366]/40 hover:ring-[#25D366]/60 focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 focus:ring-offset-black'
       aria-label='Contactar por WhatsApp'
     >
-      <span className='text-sm font-bold uppercase tracking-wide'>{label}</span>
-      <span className='flex h-10 w-10 items-center justify-center rounded-full bg-white'>
+      <span className='text-xs font-bold uppercase tracking-widest drop-shadow-md'>{label}</span>
+      <span className='flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-transform duration-300 group-hover:rotate-12 group-hover:bg-white'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           viewBox='0 0 24 24'

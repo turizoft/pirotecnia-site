@@ -1,12 +1,13 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import Link from 'next/link';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, ArrowRight } from 'lucide-react';
 
 import { CornerOrnament } from '@/components/corner-ornament';
 import { CTASection } from '@/components/cta-section';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
 import { getPayloadClient } from '@/lib/payload';
 
 dayjs.locale('es');
@@ -26,63 +27,91 @@ export default async function EventsPage() {
   const events = eventsRes?.docs ?? [];
 
   return (
-    <div className='w-full bg-background text-foreground'>
+    <div className='w-full bg-black text-white selection:bg-primary selection:text-white pb-0'>
       <SiteHeader />
 
-      <section className='border-b-8 border-black bg-primary py-16 md:py-20'>
-        <div className='container mx-auto px-4 text-center'>
-          <h1 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-white md:text-6xl'>
-            Próximos Eventos
-          </h1>
-          <p className='mx-auto max-w-2xl text-lg font-bold text-white'>
-            Espectáculos pirotécnicos impresionantes en toda Colombia
-          </p>
+      <section className='relative min-h-[50vh] flex items-center justify-center overflow-hidden border-b border-white/10'>
+        <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,0,0,0.15)_0%,_rgba(0,0,0,1)_70%)]' />
+        <div className='absolute inset-0 bg-[url("/images/noise.png")] opacity-[0.02] mix-blend-overlay' />
+
+        <div className='container relative z-10 mx-auto px-4 pt-32 pb-20 text-center'>
+          <FadeIn>
+            <div className='inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 pr-5 pl-2 py-1.5 backdrop-blur-md mb-8'>
+              <div className='flex h-6 w-6 items-center justify-center rounded-full bg-primary/20'>
+                <span className='h-2 w-2 rounded-full bg-primary animate-pulse' />
+              </div>
+              <p className='text-xs font-semibold uppercase tracking-[0.2em] text-white/90'>
+                Agenda Oficial
+              </p>
+            </div>
+            <h1 className='font-heading mb-6 text-5xl font-medium uppercase tracking-tight text-white md:text-7xl'>
+              Nuestros <span className='text-primary font-black block mt-2'>Eventos</span>
+            </h1>
+            <p className='mx-auto max-w-2xl text-xl font-light text-white/60'>
+              Espectáculos pirotécnicos impresionantes en toda Colombia
+            </p>
+          </FadeIn>
         </div>
       </section>
 
-      <section className='bg-white py-20 md:py-28'>
-        <div className='container mx-auto px-4'>
+      <section className='relative py-24 md:py-32'>
+        <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_rgba(255,0,0,0.05)_0%,_rgba(0,0,0,0)_60%)]' />
+
+        <div className='container relative z-10 mx-auto px-4 lg:px-8'>
           {events.length > 0 ? (
-            <div className='mb-12 space-y-6'>
-              {events.map((event: any) => {
-                const dateLabel = dayjs(event.date).format('DD');
-                const monthLabel = dayjs(event.date).format('MMM');
-                return (
-                  <div
-                    key={event.id}
-                    className='relative flex items-start gap-6 border-4 border-black bg-primary p-8 shadow-[0_0_0_0_rgba(0,0,0,0)] transition-shadow hover:shadow-2xl'
-                  >
-                    <CornerOrnament inset='0.5rem' size='1.25rem' thickness='2px' />
-                    <div className='relative z-10 flex flex-shrink-0 flex-col items-center justify-center gap-2 border-2 border-black bg-black px-4 py-3 text-center'>
-                      <p className='text-4xl font-black text-accent'>{dateLabel}</p>
-                      <p className='text-xs font-black uppercase text-accent'>{monthLabel}</p>
-                    </div>
-                    <div className='relative z-10 flex-grow space-y-3'>
-                      <h3 className='text-2xl font-black uppercase text-black'>{event.title}</h3>
-                      <p className='text-sm font-semibold text-black'>{event.description}</p>
-                      <Link
-                        href={event.ctaUrl || '/events'}
-                        className='inline-block rounded-none border-2 border-black bg-black px-6 py-2 text-xs font-black uppercase tracking-wider text-primary transition-colors hover:bg-accent hover:text-black'
-                      >
-                        {event.ctaLabel ?? 'Más Información'}
-                      </Link>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className='mb-12 max-w-4xl mx-auto space-y-6'>
+              <StaggerContainer>
+                {events.map((event: any) => {
+                  const dateLabel = dayjs(event.date).format('DD');
+                  const monthLabel = dayjs(event.date).format('MMM');
+                  return (
+                    <StaggerItem key={event.id}>
+                      <div className='group relative flex flex-col md:flex-row items-center md:items-start gap-8 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-8 md:p-10 backdrop-blur-sm transition-all hover:bg-white/[0.05] hover:border-white/20 text-white/5 hover:text-white/20'>
+                        <CornerOrnament variant='simple' inset='0.75rem' size='1.5rem' thickness='1px' />
+                        <div className='absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-primary/10 via-transparent to-transparent mix-blend-overlay pointer-events-none' />
+
+                        <div className='relative z-10 flex flex-shrink-0 flex-col items-center justify-center rounded-2xl border border-white/10 bg-black/40 px-8 py-6 text-center ring-1 ring-white/5 min-w-[140px]'>
+                          <p className='text-5xl font-light tracking-tighter text-white'>{dateLabel}</p>
+                          <p className='mt-2 text-xs font-bold uppercase tracking-widest text-primary'>{monthLabel}</p>
+                        </div>
+
+                        <div className='relative z-10 flex-grow space-y-4 text-center md:text-left'>
+                          <h3 className='text-3xl font-light uppercase tracking-wide text-white'>{event.title}</h3>
+                          <p className='text-base font-light leading-relaxed text-white/60'>{event.description}</p>
+                          <div className='pt-4'>
+                            <Link
+                              href={event.ctaUrl || '/events'}
+                              className='inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary hover:text-white transition-colors group-hover:translate-x-1 duration-300'
+                            >
+                              {event.ctaLabel ?? 'Más Información'} <ArrowRight className='h-3 w-3' />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </StaggerItem>
+                  );
+                })}
+              </StaggerContainer>
             </div>
           ) : (
-            <div className='py-16 text-center'>
-              <Sparkles className='mx-auto mb-4 h-16 w-16 text-primary/50' />
-              <p className='text-xl font-semibold text-gray-500'>
+            <FadeIn className='py-24 text-center'>
+              <div className='mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10'>
+                <Sparkles className='h-10 w-10 text-white/20' />
+              </div>
+              <p className='text-xl font-light text-white/40'>
                 No hay eventos programados actualmente.
               </p>
-            </div>
+            </FadeIn>
           )}
         </div>
       </section>
 
-      <CTASection />
+      <CTASection
+        title='¿Listo Para Encender?'
+        body='Explora nuestra colección premium y experimenta la excelencia pirotécnica.'
+        ctaLabel='Comprar Ahora'
+        ctaHref='/products'
+      />
       <SiteFooter />
     </div>
   );

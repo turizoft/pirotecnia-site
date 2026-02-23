@@ -134,7 +134,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-roboto-slab), serif;
+    font-family: var(--font-heading), sans-serif;
   }
 }
 
