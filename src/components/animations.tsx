@@ -3,7 +3,15 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 
-export function FadeIn({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
+export function FadeIn({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -17,11 +25,17 @@ export function FadeIn({ children, delay = 0, className }: { children: ReactNode
   );
 }
 
-export function StaggerContainer({ children, className }: { children: ReactNode; className?: string }) {
+export function StaggerContainer({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <motion.div
-      initial="hidden"
-      whileInView="visible"
+      initial='hidden'
+      whileInView='visible'
       viewport={{ once: true, margin: '-50px' }}
       variants={{
         visible: {
@@ -37,12 +51,22 @@ export function StaggerContainer({ children, className }: { children: ReactNode;
   );
 }
 
-export function StaggerItem({ children, className }: { children: ReactNode; className?: string }) {
+export function StaggerItem({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <motion.div
       variants={{
         hidden: { opacity: 0, y: 40 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] } },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] },
+        },
       }}
       className={className}
     >
@@ -51,7 +75,15 @@ export function StaggerItem({ children, className }: { children: ReactNode; clas
   );
 }
 
-export function ScaleIn({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
+export function ScaleIn({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}

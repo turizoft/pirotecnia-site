@@ -1,7 +1,7 @@
-import path from 'path';
-import { buildConfig } from 'payload';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 import { es } from '@payloadcms/translations/languages/es';
+import path from 'path';
+import { buildConfig } from 'payload';
 
 const MEDIA_PATH = path.resolve(process.cwd(), 'public/media');
 
@@ -82,7 +82,8 @@ export default buildConfig({
       },
       admin: {
         useAsTitle: 'name',
-        description: 'Gestiona la lista de productos y cuales aparecen destacados.',
+        description:
+          'Gestiona la lista de productos y cuales aparecen destacados.',
       },
       fields: [
         {
@@ -145,7 +146,8 @@ export default buildConfig({
       },
       admin: {
         useAsTitle: 'title',
-        description: 'Controla los eventos visibles en el home y la página de eventos.',
+        description:
+          'Controla los eventos visibles en el home y la página de eventos.',
       },
       fields: [
         {
@@ -376,7 +378,8 @@ export default buildConfig({
               name: 'subtitle',
               label: 'Subtítulo',
               type: 'text',
-              defaultValue: 'Más de 25 años iluminando celebraciones en Colombia',
+              defaultValue:
+                'Más de 25 años iluminando celebraciones en Colombia',
             },
           ],
         },
@@ -437,7 +440,8 @@ export default buildConfig({
               name: 'subtitle',
               label: 'Subtítulo',
               type: 'text',
-              defaultValue: 'Estamos aquí para ayudarte con tus necesidades pirotécnicas',
+              defaultValue:
+                'Estamos aquí para ayudarte con tus necesidades pirotécnicas',
             },
           ],
         },
@@ -512,7 +516,8 @@ export default buildConfig({
               name: 'subtitle',
               label: 'Subtítulo',
               type: 'text',
-              defaultValue: 'Respuestas a las dudas más comunes de nuestros clientes',
+              defaultValue:
+                'Respuestas a las dudas más comunes de nuestros clientes',
             },
           ],
         },
@@ -679,7 +684,8 @@ export default buildConfig({
               name: 'subheading',
               label: 'Descripción',
               type: 'text',
-              defaultValue: 'Productos pirotécnicos premium cuidadosamente seleccionados',
+              defaultValue:
+                'Productos pirotécnicos premium cuidadosamente seleccionados',
             },
             {
               name: 'products',
@@ -824,7 +830,8 @@ export default buildConfig({
               name: 'body',
               label: 'Descripción',
               type: 'textarea',
-              defaultValue: 'Explora nuestra colección premium y experimenta la excelencia pirotécnica.',
+              defaultValue:
+                'Explora nuestra colección premium y experimenta la excelencia pirotécnica.',
             },
             {
               name: 'primaryLabel',

@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Inicio' },
@@ -31,7 +31,7 @@ export function SiteHeader() {
         'fixed top-0 z-50 w-full transition-all duration-300',
         scrolled
           ? 'bg-black/80 backdrop-blur-md border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)]'
-          : 'bg-transparent border-b border-transparent'
+          : 'bg-transparent border-b border-transparent',
       )}
     >
       <div className='container mx-auto px-4 lg:px-8 py-4'>
@@ -76,7 +76,11 @@ export function SiteHeader() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
-            {isMenuOpen ? <X className='h-5 w-5' /> : <Menu className='h-5 w-5' />}
+            {isMenuOpen ? (
+              <X className='h-5 w-5' />
+            ) : (
+              <Menu className='h-5 w-5' />
+            )}
           </button>
         </nav>
 

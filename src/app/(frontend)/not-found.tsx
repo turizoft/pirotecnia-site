@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 
 import { CornerOrnament } from '@/components/corner-ornament';
 import { SiteHeader } from '@/components/site-header';
@@ -22,8 +22,8 @@ export default function NotFound() {
               Page Not Found
             </p>
             <p className='mx-auto mb-8 max-w-md text-lg font-bold text-black'>
-              Sorry, the page you&apos;re looking for doesn&apos;t exist. Let&apos;s get
-              you back on track.
+              Sorry, the page you&apos;re looking for doesn&apos;t exist.
+              Let&apos;s get you back on track.
             </p>
           </div>
           <div className='flex flex-col justify-center gap-4 sm:flex-row'>

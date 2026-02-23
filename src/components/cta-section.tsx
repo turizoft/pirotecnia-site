@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { ArrowRight, Sparkles } from 'lucide-react';
 import { FadeIn } from '@/components/animations';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 
 type CTASectionProps = {
   title?: string | null;

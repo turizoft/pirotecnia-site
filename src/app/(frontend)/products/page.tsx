@@ -1,12 +1,12 @@
+import { ArrowRight, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Sparkles, Star, ArrowRight } from 'lucide-react';
 
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
 import { CornerOrnament } from '@/components/corner-ornament';
 import { CTASection } from '@/components/cta-section';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
 import { getPayloadClient } from '@/lib/payload';
 
 export const revalidate = 0;
@@ -15,7 +15,8 @@ function getMediaUrl(media: any) {
   if (!media) return null;
   if (typeof media === 'string') return media;
   if ('url' in media && media.url) return media.url as string;
-  if ('filename' in media && media.filename) return `/media/${media.filename}` as string;
+  if ('filename' in media && media.filename)
+    return `/media/${media.filename}` as string;
   return null;
 }
 
@@ -50,7 +51,10 @@ export default async function ProductsPage() {
               </p>
             </div>
             <h1 className='font-heading mb-6 text-5xl font-medium uppercase tracking-tight text-white md:text-7xl'>
-              Nuestra Colección
+              Nuestra{' '}
+              <span className='text-primary font-black block mt-2'>
+                Colección
+              </span>
             </h1>
             <p className='mx-auto max-w-2xl text-xl font-light text-white/60'>
               Productos pirotécnicos premium para cada celebración
@@ -71,7 +75,13 @@ export default async function ProductsPage() {
                 return (
                   <StaggerItem key={product.id}>
                     <div className='group relative h-full rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-6 transition-all hover:bg-white/[0.04] hover:border-white/20 hover:shadow-[0_0_40px_rgba(255,0,0,0.08)]'>
-                      <CornerOrnament variant='simple' inset='0.75rem' size='1.5rem' thickness='1px' className='text-white/10 group-hover:text-white/30 transition-colors' />
+                      <CornerOrnament
+                        variant='simple'
+                        inset='0.75rem'
+                        size='1.5rem'
+                        thickness='1px'
+                        className='text-white/10 group-hover:text-white/30 transition-colors'
+                      />
 
                       <div className='relative mb-8 flex h-56 items-center justify-center overflow-hidden rounded-xl bg-black/40 ring-1 ring-white/5'>
                         <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10' />
@@ -103,7 +113,9 @@ export default async function ProductsPage() {
                             />
                           ))}
                         </div>
-                        <h3 className='text-xl font-light text-white tracking-wide'>{product.name}</h3>
+                        <h3 className='text-xl font-light text-white tracking-wide'>
+                          {product.name}
+                        </h3>
                         {product.description && (
                           <p className='text-sm font-light leading-relaxed text-white/50 line-clamp-2'>
                             {product.description}

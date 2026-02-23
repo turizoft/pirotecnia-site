@@ -1,5 +1,6 @@
-import { AlertTriangle, CheckCircle, Flame, ShieldCheck } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
 
+import { FadeIn } from '@/components/animations';
 import { CornerOrnament } from '@/components/corner-ornament';
 import { CTASection } from '@/components/cta-section';
 import { SiteFooter } from '@/components/site-footer';
@@ -8,76 +9,91 @@ import { getPayloadClient } from '@/lib/payload';
 
 export const revalidate = 0;
 
-const ICONS = {
-  shield: ShieldCheck,
-  alert: AlertTriangle,
-  check: CheckCircle,
-  flame: Flame,
-} as const;
-
 export default async function SafetyPage() {
   const payload = await getPayloadClient();
   const safety = await payload.findGlobal({ slug: 'safety' }).catch(() => null);
 
   const hero = (safety as any)?.hero ?? {
-    title: 'Información de Seguridad',
-    subtitle: 'Tu seguridad es nuestra prioridad',
+    title: 'Información de',
+    titleAccent: 'Seguridad',
+    subtitle: 'Nuestra prioridad es que disfrutes con responsabilidad',
   };
 
-  const guidelines = (safety as any)?.guidelines ?? [];
+  const content = (safety as any)?.content;
 
   return (
-    <div className='w-full bg-background text-foreground'>
+    <div className='min-h-screen bg-black text-white'>
       <SiteHeader />
 
-      <section className='border-b-8 border-black bg-primary py-16 md:py-20'>
-        <div className='container mx-auto px-4 text-center'>
-          <h1 className='font-heading mb-4 text-5xl font-black uppercase tracking-tight text-white md:text-6xl'>
-            {hero.title}
-          </h1>
-          <p className='mx-auto max-w-2xl text-lg font-bold text-white'>
-            {hero.subtitle}
-          </p>
-        </div>
-      </section>
+      <main>
+        {/* Hero Section */}
+        <section className='relative min-h-[50vh] flex items-center justify-center overflow-hidden border-b border-white/10'>
+          <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,0,0,0.15)_0%,_rgba(0,0,0,1)_70%)]' />
+          <div className='absolute inset-0 bg-[url("/images/noise.png")] opacity-[0.02] mix-blend-overlay' />
 
-      <section className='bg-white py-20 md:py-28'>
-        <div className='container mx-auto px-4'>
-          {guidelines.length > 0 ? (
-            <div className='grid gap-8 md:grid-cols-2'>
-              {guidelines.map((guideline: any, index: number) => {
-                const Icon = ICONS[(guideline?.icon as keyof typeof ICONS) ?? 'shield'] ?? ShieldCheck;
-                return (
-                  <div
-                    key={index}
-                    className='relative border-4 border-black bg-primary p-8'
-                  >
-                    <CornerOrnament inset='0.75rem' size='1.5rem' thickness='2px' variant='intricate' />
-                    <div className='mb-4 flex h-16 w-16 items-center justify-center bg-black'>
-                      <Icon className='h-8 w-8 text-accent' />
-                    </div>
-                    <h3 className='mb-2 text-2xl font-black text-black'>
-                      {guideline.title}
-                    </h3>
-                    <p className='text-sm font-semibold text-black'>
-                      {guideline.description}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className='py-16 text-center'>
-              <ShieldCheck className='mx-auto mb-4 h-16 w-16 text-primary/50' />
-              <p className='text-xl font-semibold text-gray-500'>
-                Contenido próximamente.
+          <div className='container relative z-10 mx-auto px-4 pt-32 pb-20 text-center'>
+            <FadeIn>
+              <div className='inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 pr-5 pl-2 py-1.5 backdrop-blur-md mb-8'>
+                <div className='flex h-6 w-6 items-center justify-center rounded-full bg-primary/20'>
+                  <ShieldAlert className='h-3 w-3 text-primary' />
+                </div>
+                <p className='text-xs font-semibold uppercase tracking-[0.2em] text-white/90'>
+                  Prioridad #1
+                </p>
+              </div>
+              <h1 className='font-heading mb-6 text-5xl font-medium uppercase tracking-tight text-white md:text-7xl'>
+                Información de{' '}
+                <span className='text-primary font-black block mt-2'>
+                  Seguridad
+                </span>
+              </h1>
+              <p className='mx-auto max-w-2xl text-xl font-light text-white/60'>
+                {hero.subtitle}
               </p>
-            </div>
-          )}
-        </div>
-      </section>
+            </FadeIn>
+          </div>
+        </section>
 
-      <CTASection />
+        {/* Content Section */}
+        <section className='relative py-24 md:py-32'>
+          <div className='absolute inset-0 bg-[url("/images/noise.png")] opacity-[0.02] mix-blend-overlay' />
+          <div className='container relative z-10 mx-auto px-4'>
+            {content ? (
+              <FadeIn className='mx-auto max-w-4xl'>
+                <div className='group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-8 md:p-12 backdrop-blur-sm shadow-[0_0_40px_rgba(255,0,0,0.05)]'>
+                  <CornerOrnament
+                    inset='1rem'
+                    size='2rem'
+                    thickness='1px'
+                    className='text-white/10'
+                  />
+                  <div className='prose prose-invert prose-lg max-w-none prose-headings:font-heading prose-headings:font-medium prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-white prose-p:text-white/70 prose-p:font-light'>
+                    {/* Rich text content would be rendered here */}
+                    {typeof content === 'string' ? (
+                      <div dangerouslySetInnerHTML={{ __html: content }} />
+                    ) : (
+                      <p className='text-white/40 font-mono text-sm'>
+                        Contenido detectado pero requiere renderizado de Payload
+                        CMS.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </FadeIn>
+            ) : (
+              <FadeIn className='mx-auto max-w-md rounded-2xl border border-white/5 bg-white/[0.02] p-12 text-center backdrop-blur-sm'>
+                <ShieldAlert className='mx-auto mb-6 h-16 w-16 text-white/20' />
+                <p className='text-lg font-light text-white/40'>
+                  Contenido próximamente.
+                </p>
+              </FadeIn>
+            )}
+          </div>
+        </section>
+
+        <CTASection />
+      </main>
+
       <SiteFooter />
     </div>
   );

@@ -1,10 +1,10 @@
-import { Star, Quote } from 'lucide-react';
+import { Quote, Star } from 'lucide-react';
 
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
 import { CornerOrnament } from '@/components/corner-ornament';
 import { CTASection } from '@/components/cta-section';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
 import { getPayloadClient } from '@/lib/payload';
 
 export const revalidate = 0;
@@ -40,7 +40,10 @@ export default async function TestimonialsPage() {
               </p>
             </div>
             <h1 className='font-heading mb-6 text-5xl font-medium uppercase tracking-tight text-white md:text-7xl'>
-              Lo Que Dicen <span className='text-primary font-black block mt-2'>Nuestros Clientes</span>
+              Lo Que Dicen{' '}
+              <span className='text-primary font-black block mt-2'>
+                Nuestros Clientes
+              </span>
             </h1>
             <p className='mx-auto max-w-2xl text-xl font-light text-white/60'>
               Experiencias reales de clientes satisfechos
@@ -60,7 +63,12 @@ export default async function TestimonialsPage() {
                 return (
                   <StaggerItem key={testimonial.id}>
                     <div className='group relative h-full rounded-2xl border border-white/10 bg-white/[0.01] p-10 backdrop-blur-sm transition-all hover:bg-white/[0.03] hover:border-white/20 text-white/5 hover:text-white/20'>
-                      <CornerOrnament variant='simple' inset='0.5rem' size='1rem' thickness='1px' />
+                      <CornerOrnament
+                        variant='simple'
+                        inset='0.5rem'
+                        size='1rem'
+                        thickness='1px'
+                      />
                       <Quote className='absolute top-8 right-8 h-8 w-8 text-white/5 opacity-50 transition-colors group-hover:text-primary/10' />
 
                       <div className='mb-8 flex gap-1.5 relative z-10'>
@@ -80,7 +88,9 @@ export default async function TestimonialsPage() {
                           {testimonial.name.charAt(0)}
                         </div>
                         <div>
-                          <p className='text-base font-light tracking-wide text-white'>{testimonial.name}</p>
+                          <p className='text-base font-light tracking-wide text-white'>
+                            {testimonial.name}
+                          </p>
                           <p className='text-[10px] font-medium tracking-widest text-white/40 mt-1 uppercase'>
                             {testimonial.title ? `${testimonial.title} • ` : ''}
                             {testimonial.city}

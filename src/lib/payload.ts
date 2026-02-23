@@ -1,8 +1,8 @@
-import { cache } from 'react';
 import { getPayload } from 'payload';
+import { cache } from 'react';
 
-import configPromise from '@payload-config';
 import importMap from '@/payload.import-map';
+import configPromise from '@payload-config';
 
 export const getPayloadClient = cache(async () => {
   return getPayload({

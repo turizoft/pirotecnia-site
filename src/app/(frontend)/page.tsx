@@ -1,15 +1,25 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
+import {
+  ArrowRight,
+  MapPin,
+  Play,
+  Quote,
+  Shield,
+  Sparkles,
+  Star,
+  Users,
+  Zap,
+} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Shield, Sparkles, Star, Users, Zap, ArrowRight, Play, Quote } from 'lucide-react';
 
+import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
+import { CornerOrnament } from '@/components/corner-ornament';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { WhatsAppButton } from '@/components/whatsapp-button';
-import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
-import { CornerOrnament } from '@/components/corner-ornament';
 import { getPayloadClient } from '@/lib/payload';
 import { cn } from '@/lib/utils';
 
@@ -36,7 +46,8 @@ const DEFAULT_REASONS = [
   {
     icon: 'shield',
     title: 'Certificado Seguro',
-    description: 'Todos los productos cumplen con estándares internacionales de seguridad',
+    description:
+      'Todos los productos cumplen con estándares internacionales de seguridad',
   },
   {
     icon: 'users',
@@ -66,56 +77,63 @@ function getMediaUrl(media: any) {
   if (!media) return null;
   if (typeof media === 'string') return media;
   if ('url' in media && media.url) return media.url as string;
-  if ('filename' in media && media.filename) return `/media/${media.filename}` as string;
+  if ('filename' in media && media.filename)
+    return `/media/${media.filename}` as string;
   return null;
 }
 
 export default async function Home() {
   const payload = await getPayloadClient();
 
-  const [home, productsRes, featuredRes, eventsRes, locationsRes, testimonialsRes] =
-    await Promise.all([
-      payload.findGlobal({ slug: 'homepage', depth: 2 }).catch(() => null),
-      payload
-        .find({
-          collection: 'products',
-          depth: 2,
-          limit: 12,
-          overrideAccess: false,
-        })
-        .catch(() => null),
-      payload
-        .find({
-          collection: 'products',
-          depth: 2,
-          limit: 6,
-          where: { featured: { equals: true } },
-          overrideAccess: false,
-        })
-        .catch(() => null),
-      payload
-        .find({
-          collection: 'events',
-          limit: 3,
-          sort: 'date',
-          overrideAccess: false,
-        })
-        .catch(() => null),
-      payload
-        .find({
-          collection: 'locations',
-          limit: 3,
-          overrideAccess: false,
-        })
-        .catch(() => null),
-      payload
-        .find({
-          collection: 'testimonials',
-          limit: 3,
-          overrideAccess: false,
-        })
-        .catch(() => null),
-    ]);
+  const [
+    home,
+    productsRes,
+    featuredRes,
+    eventsRes,
+    locationsRes,
+    testimonialsRes,
+  ] = await Promise.all([
+    payload.findGlobal({ slug: 'homepage', depth: 2 }).catch(() => null),
+    payload
+      .find({
+        collection: 'products',
+        depth: 2,
+        limit: 12,
+        overrideAccess: false,
+      })
+      .catch(() => null),
+    payload
+      .find({
+        collection: 'products',
+        depth: 2,
+        limit: 6,
+        where: { featured: { equals: true } },
+        overrideAccess: false,
+      })
+      .catch(() => null),
+    payload
+      .find({
+        collection: 'events',
+        limit: 3,
+        sort: 'date',
+        overrideAccess: false,
+      })
+      .catch(() => null),
+    payload
+      .find({
+        collection: 'locations',
+        limit: 3,
+        overrideAccess: false,
+      })
+      .catch(() => null),
+    payload
+      .find({
+        collection: 'testimonials',
+        limit: 3,
+        overrideAccess: false,
+      })
+      .catch(() => null),
+  ]);
 
   const allProducts = productsRes?.docs ?? [];
   const featuredProductsFromGlobal =
@@ -133,8 +151,12 @@ export default async function Home() {
         ? featuredRes.docs
         : allProducts.slice(0, 3);
 
-  const stats = (home as any)?.stats?.length ? (home as any).stats : DEFAULT_STATS;
-  const reasons = (home as any)?.reasons?.length ? (home as any).reasons : DEFAULT_REASONS;
+  const stats = (home as any)?.stats?.length
+    ? (home as any).stats
+    : DEFAULT_STATS;
+  const reasons = (home as any)?.reasons?.length
+    ? (home as any).reasons
+    : DEFAULT_REASONS;
   const events = eventsRes?.docs ?? [];
   const locations = locationsRes?.docs ?? [];
   const testimonials = testimonialsRes?.docs ?? [];
@@ -152,20 +174,27 @@ export default async function Home() {
     videoUrl: '/header_video.mp4',
   };
 
-  const featuredHeading = (home as any)?.featured?.heading ?? 'Colección Destacada';
+  const featuredHeading =
+    (home as any)?.featured?.heading ?? 'Colección Destacada';
   const featuredSubheading =
     (home as any)?.featured?.subheading ??
     'Productos pirotécnicos premium cuidadosamente seleccionados';
 
-  const locationsHeading = (home as any)?.locationsSection?.heading ?? 'Visítanos';
+  const locationsHeading =
+    (home as any)?.locationsSection?.heading ?? 'Visítanos';
   const locationsSubheading =
-    (home as any)?.locationsSection?.subheading ?? 'Salas de exhibición profesionales en todo el país';
-  const locationsHero = getMediaUrl((home as any)?.locationsSection?.heroImage) || '/images/store_bg.png';
+    (home as any)?.locationsSection?.subheading ??
+    'Salas de exhibición profesionales en todo el país';
+  const locationsHero =
+    getMediaUrl((home as any)?.locationsSection?.heroImage) ||
+    '/images/store_bg.png';
 
   const testimonialsHeading =
-    (home as any)?.testimonialsSection?.heading ?? 'Lo Que Dicen Nuestros Clientes';
+    (home as any)?.testimonialsSection?.heading ??
+    'Lo Que Dicen Nuestros Clientes';
   const testimonialsSubheading =
-    (home as any)?.testimonialsSection?.subheading ?? 'Confiado por profesionales en toda Colombia';
+    (home as any)?.testimonialsSection?.subheading ??
+    'Confiado por profesionales en toda Colombia';
 
   const cta = (home as any)?.cta ?? {
     title: '¿Listo Para Encender?',
@@ -184,7 +213,6 @@ export default async function Home() {
         <div className='absolute inset-0 bg-[url("/images/noise.png")] opacity-[0.02] mix-blend-overlay z-0 pointer-events-none' />
 
         <div className='container relative z-10 mx-auto px-4 lg:px-8 pt-32 pb-20 flex flex-col md:flex-row items-center gap-16'>
-
           <div className='w-full md:w-1/2'>
             <FadeIn delay={0.1} className='max-w-xl space-y-10'>
               <div className='space-y-6'>
@@ -198,7 +226,8 @@ export default async function Home() {
                 </div>
 
                 <h1 className='font-heading text-5xl font-medium leading-[1.05] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.5rem]'>
-                  FAVIO FAVIO <span className='text-primary font-black'>DOMINÓ</span>
+                  FAVIO FAVIO{' '}
+                  <span className='text-primary font-black'>DOMINÓ</span>
                 </h1>
 
                 <p className='text-xl md:text-2xl font-light leading-relaxed text-white/80'>
@@ -230,14 +259,16 @@ export default async function Home() {
           </div>
 
           <div className='w-full md:w-1/2'>
-            <FadeIn delay={0.3} className='relative rounded-[2rem] overflow-hidden shadow-[0_0_80px_rgba(255,0,0,0.15)] ring-1 ring-white/10 before:absolute before:inset-0 before:ring-1 before:ring-inset before:ring-white/10 before:rounded-[2rem] before:z-20'>
+            <FadeIn
+              delay={0.3}
+              className='relative rounded-[2rem] overflow-hidden shadow-[0_0_80px_rgba(255,0,0,0.15)] ring-1 ring-white/10 before:absolute before:inset-0 before:ring-1 before:ring-inset before:ring-white/10 before:rounded-[2rem] before:z-20'
+            >
               <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 pointer-events-none' />
               <div className='h-[500px] w-full md:h-[650px]'>
                 <HeroCarousel />
               </div>
             </FadeIn>
           </div>
-
         </div>
       </section>
 
@@ -253,11 +284,15 @@ export default async function Home() {
 
         <div className='container mx-auto px-4 lg:px-8'>
           <FadeIn className='mb-20 text-center'>
-            <p className='text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4'>Excelencia Comprobada</p>
+            <p className='text-primary text-sm font-bold uppercase tracking-[0.2em] mb-4'>
+              Excelencia Comprobada
+            </p>
             <h2 className='font-heading text-4xl font-light uppercase tracking-tight text-white md:text-5xl lg:text-6xl'>
               {featuredHeading}
             </h2>
-            <p className='mt-6 mx-auto max-w-2xl text-lg font-light text-white/60'>{featuredSubheading}</p>
+            <p className='mt-6 mx-auto max-w-2xl text-lg font-light text-white/60'>
+              {featuredSubheading}
+            </p>
           </FadeIn>
 
           {featuredProducts.length > 0 ? (
@@ -268,7 +303,6 @@ export default async function Home() {
                 return (
                   <StaggerItem key={product.id}>
                     <div className='group relative h-full rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm p-6 transition-all hover:bg-white/[0.04] hover:border-white/20 hover:shadow-[0_0_40px_rgba(255,0,0,0.08)]'>
-
                       <div className='relative mb-8 flex h-72 items-center justify-center overflow-hidden rounded-xl bg-black/40 ring-1 ring-white/5'>
                         <div className='absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10' />
                         {productImage ? (
@@ -299,7 +333,9 @@ export default async function Home() {
                             />
                           ))}
                         </div>
-                        <h3 className='text-2xl font-light text-white tracking-wide'>{product.name}</h3>
+                        <h3 className='text-2xl font-light text-white tracking-wide'>
+                          {product.name}
+                        </h3>
                         {product.description && (
                           <p className='text-sm font-light leading-relaxed text-white/50 line-clamp-2'>
                             {product.description}
@@ -328,7 +364,9 @@ export default async function Home() {
               href='/products'
               className='inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-primary transition-all hover:text-white group'
             >
-              <span className='border-b border-primary/30 pb-1 group-hover:border-white/50 transition-colors'>Ver Colección Completa</span>
+              <span className='border-b border-primary/30 pb-1 group-hover:border-white/50 transition-colors'>
+                Ver Colección Completa
+              </span>
               <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-2' />
             </Link>
           </FadeIn>
@@ -348,7 +386,12 @@ export default async function Home() {
             {stats.map((stat: any) => (
               <StaggerItem key={stat.label}>
                 <div className='group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] px-8 py-12 text-center transition-all hover:bg-white/[0.04] text-white/5 hover:text-white/20'>
-                  <CornerOrnament variant='simple' inset='0.75rem' size='1rem' thickness='1px' />
+                  <CornerOrnament
+                    variant='simple'
+                    inset='0.75rem'
+                    size='1rem'
+                    thickness='1px'
+                  />
                   <div className='absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-primary/20 via-transparent to-transparent rounded-2xl mix-blend-overlay' />
                   <p className='relative z-10 text-5xl md:text-6xl font-heading font-light tracking-tighter text-white mb-4'>
                     {stat.value}
@@ -374,7 +417,9 @@ export default async function Home() {
 
           <StaggerContainer className='grid gap-8 md:grid-cols-3'>
             {reasons.map((reason: any) => {
-              const Icon = ICONS[(reason?.icon as keyof typeof ICONS) ?? 'shield'] ?? Shield;
+              const Icon =
+                ICONS[(reason?.icon as keyof typeof ICONS) ?? 'shield'] ??
+                Shield;
               return (
                 <StaggerItem key={reason?.title}>
                   <div className='group relative h-full rounded-2xl border border-white/5 bg-white/[0.01] p-10 text-center transition-all hover:border-white/10 hover:bg-white/[0.03]'>
@@ -409,7 +454,9 @@ export default async function Home() {
             <h2 className='font-heading mb-6 text-4xl font-light uppercase tracking-tight text-white md:text-5xl lg:text-6xl'>
               {locationsHeading}
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-light text-white/60'>{locationsSubheading}</p>
+            <p className='mx-auto max-w-2xl text-lg font-light text-white/60'>
+              {locationsSubheading}
+            </p>
           </FadeIn>
 
           <FadeIn delay={0.2} className='mb-24 relative flex justify-center'>
@@ -436,20 +483,30 @@ export default async function Home() {
                       <div className='rounded-full bg-primary/20 p-3 ring-1 ring-primary/30'>
                         <MapPin className='h-6 w-6 text-primary' />
                       </div>
-                      <h3 className='text-2xl font-light text-white tracking-wide mt-1'>{location.city}</h3>
+                      <h3 className='text-2xl font-light text-white tracking-wide mt-1'>
+                        {location.city}
+                      </h3>
                     </div>
                     <div className='space-y-3 ps-14'>
                       {location.description && (
-                        <p className='text-sm font-light text-white/50'>{location.description}</p>
+                        <p className='text-sm font-light text-white/50'>
+                          {location.description}
+                        </p>
                       )}
                       {location.address && (
-                        <p className='text-xs font-medium uppercase tracking-widest text-white/80'>{location.address}</p>
+                        <p className='text-xs font-medium uppercase tracking-widest text-white/80'>
+                          {location.address}
+                        </p>
                       )}
                       {location.phone && (
-                        <p className='text-xs font-medium uppercase tracking-widest text-white/80'>{location.phone}</p>
+                        <p className='text-xs font-medium uppercase tracking-widest text-white/80'>
+                          {location.phone}
+                        </p>
                       )}
                       {location.hours && (
-                        <p className='text-xs font-light text-white/40 mt-2'>{location.hours}</p>
+                        <p className='text-xs font-light text-white/40 mt-2'>
+                          {location.hours}
+                        </p>
                       )}
                       <div className='pt-6'>
                         <Link
@@ -490,7 +547,9 @@ export default async function Home() {
             <h2 className='font-heading mb-6 text-4xl font-light uppercase tracking-tight text-white md:text-5xl lg:text-6xl'>
               {testimonialsHeading}
             </h2>
-            <p className='mx-auto max-w-2xl text-lg font-light text-white/60'>{testimonialsSubheading}</p>
+            <p className='mx-auto max-w-2xl text-lg font-light text-white/60'>
+              {testimonialsSubheading}
+            </p>
           </FadeIn>
 
           {testimonials.length > 0 ? (
@@ -500,7 +559,12 @@ export default async function Home() {
                 return (
                   <StaggerItem key={testimonial.id}>
                     <div className='group relative h-full rounded-2xl border border-white/5 bg-white/[0.01] p-10 backdrop-blur-sm transition-all hover:bg-white/[0.03] hover:border-white/10 text-white/5 hover:text-white/20'>
-                      <CornerOrnament variant='simple' inset='0.5rem' size='1rem' thickness='1px' />
+                      <CornerOrnament
+                        variant='simple'
+                        inset='0.5rem'
+                        size='1rem'
+                        thickness='1px'
+                      />
                       <Quote className='absolute top-8 right-8 h-8 w-8 text-white/5 opacity-50 transition-colors group-hover:text-primary/10' />
 
                       <div className='mb-8 flex gap-1.5'>
@@ -522,10 +586,13 @@ export default async function Home() {
                           {testimonial.name.charAt(0)}
                         </div>
                         <div>
-                          <p className='text-sm font-medium tracking-wide text-white'>{testimonial.name}</p>
+                          <p className='text-sm font-medium tracking-wide text-white'>
+                            {testimonial.name}
+                          </p>
                           <p className='text-[10px] font-medium tracking-widest text-white/50 mt-1 uppercase'>
                             {testimonial.title ? `${testimonial.title} • ` : ''}
-                            {testimonial.city || (testimonial.verified ? 'Compra Verificada' : '')}
+                            {testimonial.city ||
+                              (testimonial.verified ? 'Compra Verificada' : '')}
                           </p>
                         </div>
                       </div>
@@ -545,7 +612,9 @@ export default async function Home() {
               href='/testimonials'
               className='inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-primary transition-all hover:text-white'
             >
-              <span className='border-b border-primary/30 pb-1'>Más Reseñas</span>
+              <span className='border-b border-primary/30 pb-1'>
+                Más Reseñas
+              </span>
               <ArrowRight className='h-3 w-3' />
             </Link>
           </FadeIn>
@@ -582,7 +651,7 @@ export default async function Home() {
       {/* FOOTER - Refined and Elegant */}
       <SiteFooter />
 
-      <WhatsAppButton phoneNumber="573001234567" />
+      <WhatsAppButton phoneNumber='573001234567' />
     </div>
   );
 }
