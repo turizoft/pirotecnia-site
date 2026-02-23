@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres';
+import { seoPlugin } from '@payloadcms/plugin-seo';
 import { es } from '@payloadcms/translations/languages/es';
 import path from 'path';
 import { buildConfig } from 'payload';
@@ -209,6 +210,13 @@ export default buildConfig({
           label: 'Ciudad',
           type: 'text',
           required: true,
+        },
+        {
+          name: 'slug',
+          label: 'Slug',
+          type: 'text',
+          required: true,
+          unique: true,
         },
         {
           name: 'address',
@@ -849,6 +857,30 @@ export default buildConfig({
         },
       ],
     },
+  ],
+  plugins: [
+    seoPlugin({
+      collections: ['products', 'locations', 'events'],
+      tabbedUI: true,
+      generateTitle: ({ doc }: any) => {
+        if (!doc) return 'Pirotecnia';
+        if (doc.name) return `${doc.name} | Pirotecnia`;
+        if (doc.title) return `${doc.title} | Pirotecnia`;
+        if (doc.city) return `Pirotecnia en ${doc.city} | Productos Pirotécnicos`;
+        return 'Pirotecnia';
+      },
+      generateDescription: ({ doc }: any) => {
+        if (!doc) return 'Los mejores productos pirotécnicos.';
+        if (doc.description && typeof doc.description === 'string') {
+          return doc.description;
+        }
+        return 'Encuentra los mejores productos pirotécnicos para tu celebración.';
+      },
+      generateURL: ({ doc, collectionSlug }: any) => {
+        if (!doc || !doc.slug) return 'http://localhost:5601';
+        return `http://localhost:5601/${collectionSlug}/${doc.slug}`;
+      },
+    }),
   ],
   db: postgresAdapter({
     pool: {

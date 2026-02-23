@@ -1,4 +1,5 @@
 import { ArrowRight, Sparkles, Star } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -10,6 +11,12 @@ import { SiteHeader } from '@/components/site-header';
 import { getPayloadClient } from '@/lib/payload';
 
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: 'Colección de Productos Pirotécnicos | FAVIO FAVIO DOMINÓ',
+  description: 'Explora nuestra colección de productos pirotécnicos premium para cada celebración. Fuegos artificiales de alta calidad y pólvora profesional en Colombia.',
+  keywords: ['pirotecnia', 'fuegos artificiales', 'polvora', 'productos pirotecnicos colombia', 'venta de pirotecnia'],
+};
 
 function getMediaUrl(media: any) {
   if (!media) return null;
@@ -122,7 +129,7 @@ export default async function ProductsPage() {
                           </p>
                         )}
                         <Link
-                          href='#'
+                          href={`/products/${product.slug}`}
                           className='mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-transparent px-6 py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-all group-hover:border-primary group-hover:bg-primary/10'
                         >
                           Ver Detalles <ArrowRight className='h-3 w-3' />

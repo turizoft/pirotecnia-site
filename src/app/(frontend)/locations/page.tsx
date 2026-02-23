@@ -1,4 +1,5 @@
 import { ArrowRight, Clock, MapPin, Phone } from 'lucide-react';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/animations';
@@ -9,6 +10,12 @@ import { SiteHeader } from '@/components/site-header';
 import { getPayloadClient } from '@/lib/payload';
 
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: 'Ubicaciones y Sucursales | Pirotecnia a Nivel Nacional',
+  description: 'Encuentra tu sucursal de FAVIO FAVIO DOMINÓ más cercana. Tenemos presencia de venta de pólvora y productos pirotécnicos profesionales en todo el país.',
+  keywords: ['salas de exhibicion pirotecnia', 'comprar pirotecnia cerca', 'sucursales favio favio domino', 'pólvora en colombia', 'ubicaciones de fuegos artificiales'],
+};
 
 export default async function LocationsPage() {
   const payload = await getPayloadClient();
@@ -103,14 +110,24 @@ export default async function LocationsPage() {
                       </div>
                     </div>
 
-                    <div className='mt-10 pt-8 border-t border-white/10'>
+                    <div className='mt-10 pt-8 border-t border-white/10 flex flex-col gap-3'>
                       <Link
-                        href={location.mapUrl || '/locations'}
+                        href={`/locations/${location.slug}`}
                         className='inline-flex w-full items-center justify-center gap-3 rounded-full bg-white/5 px-6 py-4 text-xs font-bold uppercase tracking-widest text-primary ring-1 ring-white/10 transition-all hover:bg-white hover:text-black hover:ring-white group-hover:border-primary'
                       >
-                        Cómo Llegar{' '}
+                        Ver Sede y Productos{' '}
                         <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-1' />
                       </Link>
+                      {location.mapUrl && (
+                        <Link
+                          href={location.mapUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className='inline-flex w-full items-center justify-center gap-3 rounded-full bg-transparent px-6 py-3 text-xs font-bold uppercase tracking-widest text-white/60 transition-all hover:text-white'
+                        >
+                          Cómo Llegar
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </StaggerItem>

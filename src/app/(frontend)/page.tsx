@@ -342,7 +342,7 @@ export default async function Home() {
                           </p>
                         )}
                         <Link
-                          href='/products'
+                          href={`/products/${product.slug}`}
                           className='mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-transparent px-6 py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-all group-hover:border-primary group-hover:bg-primary/10'
                         >
                           Ver Detalles <ArrowRight className='h-3 w-3' />
@@ -510,7 +510,7 @@ export default async function Home() {
                       )}
                       <div className='pt-6'>
                         <Link
-                          href={location.mapUrl || '/locations'}
+                          href={`/locations/${location.slug}`}
                           className='inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary hover:text-white transition-colors'
                         >
                           Ver Detalles <ArrowRight className='h-3 w-3' />
