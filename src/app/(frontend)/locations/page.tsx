@@ -29,6 +29,19 @@ export default async function LocationsPage() {
 
   const locations = locationsRes?.docs ?? [];
 
+  const pageData = await payload
+    .findGlobal({
+      slug: 'locationsPage',
+    })
+    .catch(() => null);
+
+  const hero = pageData?.hero || {
+    badge: 'Red Nacional',
+    title: 'Encuentra Nuestras',
+    titleAccent: 'Ubicaciones',
+    subtitle: 'Salas de exhibición profesionales en todo el país',
+  };
+
   return (
     <div className='w-full bg-black text-white selection:bg-primary selection:text-white pb-0'>
       <SiteHeader />
@@ -44,17 +57,19 @@ export default async function LocationsPage() {
                 <span className='h-2 w-2 rounded-full bg-primary animate-pulse' />
               </div>
               <p className='text-xs font-semibold uppercase tracking-[0.2em] text-white/90'>
-                Red Nacional
+                {hero.badge}
               </p>
             </div>
             <h1 className='font-heading mb-6 text-5xl font-medium uppercase tracking-tight text-white md:text-7xl'>
-              Encuentra Nuestras{' '}
-              <span className='text-primary font-black block mt-2'>
-                Ubicaciones
-              </span>
+              {hero.title}{' '}
+              {hero.titleAccent && (
+                <span className='text-primary font-black block mt-2'>
+                  {hero.titleAccent}
+                </span>
+              )}
             </h1>
-            <p className='mx-auto max-w-2xl text-xl font-light text-white/60'>
-              Salas de exhibición profesionales en todo el país
+            <p className='mx-auto max-w-2xl text-xl font-light text-white/60 whitespace-pre-line'>
+              {hero.subtitle}
             </p>
           </FadeIn>
         </div>

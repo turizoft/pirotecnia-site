@@ -80,11 +80,25 @@ export async function generateStaticParams() {
 }
 
 function getMediaUrl(media: any) {
-    if (!media) return null;
-    if (typeof media === 'string') return media;
-    if ('url' in media && media.url) return media.url as string;
-    if ('filename' in media && media.filename) return `/media/${media.filename}` as string;
-    return null;
+  if (!media) return null;
+  let url = null;
+  if (typeof media === 'string') {
+    url = media;
+  } else if ('url' in media && media.url) {
+    url = media.url as string;
+  } else if ('filename' in media && media.filename) {
+    url = `/api/media/file/${media.filename}`;
+  }
+  
+  if (url && url.startsWith('http')) {
+    try {
+      const parsed = new URL(url);
+      if (parsed.hostname === 'localhost' || parsed.hostname.includes('pirotecnia')) {
+        return parsed.pathname;
+      }
+    } catch (e) {}
+  }
+  return url;
 }
 
 export default async function LocationSinglePage({

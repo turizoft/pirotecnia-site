@@ -49,10 +49,12 @@ export default async function AboutPage() {
                 </p>
               </div>
               <h1 className='font-heading mb-6 text-5xl font-medium uppercase tracking-tight text-white md:text-7xl'>
-                Sobre{' '}
-                <span className='text-primary font-black block mt-2'>
-                  Nosotros
-                </span>
+                {hero.title}{' '}
+                {hero.titleAccent && (
+                  <span className='text-primary font-black block mt-2'>
+                    {hero.titleAccent}
+                  </span>
+                )}
               </h1>
               <p className='mx-auto max-w-2xl text-xl font-light text-white/60'>
                 {hero.subtitle}

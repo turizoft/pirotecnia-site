@@ -76,6 +76,7 @@ export default buildConfig({
         singular: 'Archivo',
         plural: 'Archivos',
       },
+      access: { read: () => true },
       admin: {
         useAsTitle: 'alt',
       },
@@ -103,6 +104,7 @@ export default buildConfig({
         singular: 'Producto',
         plural: 'Productos',
       },
+      access: { read: () => true },
       admin: {
         useAsTitle: 'name',
         description:
@@ -167,6 +169,7 @@ export default buildConfig({
         singular: 'Evento',
         plural: 'Eventos',
       },
+      access: { read: () => true },
       admin: {
         useAsTitle: 'title',
         description:
@@ -222,6 +225,7 @@ export default buildConfig({
         singular: 'Ubicación',
         plural: 'Ubicaciones',
       },
+      access: { read: () => true },
       admin: {
         useAsTitle: 'city',
         description: 'Administra las salas de exhibición y datos de contacto.',
@@ -274,6 +278,7 @@ export default buildConfig({
         singular: 'Testimonio',
         plural: 'Testimonios',
       },
+      access: { read: () => true },
       admin: {
         useAsTitle: 'name',
         description: 'Reseñas que aparecen en el home y página de reseñas.',
@@ -319,6 +324,40 @@ export default buildConfig({
     },
   ],
   globals: [
+    {
+      slug: 'productsPage',
+      label: 'Página de Productos',
+      fields: [
+        {
+          name: 'hero',
+          label: 'Encabezado',
+          type: 'group',
+          fields: [
+            { name: 'badge', label: 'Etiqueta', type: 'text', defaultValue: 'Calidad Premium' },
+            { name: 'title', label: 'Título Principal', type: 'text', defaultValue: 'Nuestra' },
+            { name: 'titleAccent', label: 'Título Destacado', type: 'text', defaultValue: 'Colección' },
+            { name: 'subtitle', label: 'Subtítulo', type: 'textarea', defaultValue: 'Productos pirotécnicos premium para cada celebración' },
+          ],
+        },
+      ],
+    },
+    {
+      slug: 'locationsPage',
+      label: 'Página de Ubicaciones',
+      fields: [
+        {
+          name: 'hero',
+          label: 'Encabezado',
+          type: 'group',
+          fields: [
+            { name: 'badge', label: 'Etiqueta', type: 'text', defaultValue: 'Red Nacional' },
+            { name: 'title', label: 'Título Principal', type: 'text', defaultValue: 'Encuentra Nuestras' },
+            { name: 'titleAccent', label: 'Título Destacado', type: 'text', defaultValue: 'Ubicaciones' },
+            { name: 'subtitle', label: 'Subtítulo', type: 'textarea', defaultValue: 'Salas de exhibición profesionales en todo el país' },
+          ],
+        },
+      ],
+    },
     {
       slug: 'privacy',
       label: 'Política de Privacidad',
@@ -400,9 +439,15 @@ export default buildConfig({
           fields: [
             {
               name: 'title',
-              label: 'Título',
+              label: 'Título Principal',
               type: 'text',
-              defaultValue: 'Sobre Nosotros',
+              defaultValue: 'Sobre',
+            },
+            {
+              name: 'titleAccent',
+              label: 'Título Destacado',
+              type: 'text',
+              defaultValue: 'Nosotros',
             },
             {
               name: 'subtitle',

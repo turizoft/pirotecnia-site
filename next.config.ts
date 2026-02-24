@@ -7,6 +7,19 @@ const nextConfig: NextConfig = withPayload({
       bodySizeLimit: '2mb',
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '5601',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
+    ],
+  },
   transpilePackages: ['@payloadcms/richtext-lexical'],
   serverExternalPackages: ['pino', 'thread-stream', 'sonic-boom'],
 });

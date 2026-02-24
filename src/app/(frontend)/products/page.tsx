@@ -20,11 +20,24 @@ export const metadata: Metadata = {
 
 function getMediaUrl(media: any) {
   if (!media) return null;
-  if (typeof media === 'string') return media;
-  if ('url' in media && media.url) return media.url as string;
-  if ('filename' in media && media.filename)
-    return `/media/${media.filename}` as string;
-  return null;
+  let url = null;
+  if (typeof media === 'string') {
+    url = media;
+  } else if ('url' in media && media.url) {
+    url = media.url as string;
+  } else if ('filename' in media && media.filename) {
+    url = `/api/media/file/${media.filename}`;
+  }
+
+  if (url && url.startsWith('http')) {
+    try {
+      const parsed = new URL(url);
+      if (parsed.hostname === 'localhost' || parsed.hostname.includes('pirotecnia')) {
+        return parsed.pathname;
+      }
+    } catch (e) { }
+  }
+  return url;
 }
 
 export default async function ProductsPage() {
@@ -38,6 +51,19 @@ export default async function ProductsPage() {
     .catch(() => ({ docs: [] }));
 
   const products = productsRes?.docs ?? [];
+
+  const pageData = await payload
+    .findGlobal({
+      slug: 'productsPage',
+    })
+    .catch(() => null);
+
+  const hero = pageData?.hero || {
+    badge: 'Calidad Premium',
+    title: 'Nuestra',
+    titleAccent: 'Colección',
+    subtitle: 'Productos pirotécnicos premium para cada celebración',
+  };
 
   return (
     <div className='w-full bg-black text-white selection:bg-primary selection:text-white pb-0'>
@@ -54,17 +80,19 @@ export default async function ProductsPage() {
                 <span className='h-2 w-2 rounded-full bg-primary animate-pulse' />
               </div>
               <p className='text-xs font-semibold uppercase tracking-[0.2em] text-white/90'>
-                Calidad Premium
+                {hero.badge}
               </p>
             </div>
             <h1 className='font-heading mb-6 text-5xl font-medium uppercase tracking-tight text-white md:text-7xl'>
-              Nuestra{' '}
-              <span className='text-primary font-black block mt-2'>
-                Colección
-              </span>
+              {hero.title}{' '}
+              {hero.titleAccent && (
+                <span className='text-primary font-black block mt-2'>
+                  {hero.titleAccent}
+                </span>
+              )}
             </h1>
-            <p className='mx-auto max-w-2xl text-xl font-light text-white/60'>
-              Productos pirotécnicos premium para cada celebración
+            <p className='mx-auto max-w-2xl text-xl font-light text-white/60 whitespace-pre-line'>
+              {hero.subtitle}
             </p>
           </FadeIn>
         </div>
