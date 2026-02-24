@@ -7,7 +7,7 @@ const nextConfig: NextConfig = withPayload({
       bodySizeLimit: '2mb',
     },
   },
-  transpilePackages: ['payload', '@payloadcms/richtext-lexical'],
+  transpilePackages: ['@payloadcms/richtext-lexical'],
   serverExternalPackages: ['pino', 'thread-stream', 'sonic-boom'],
 });
 

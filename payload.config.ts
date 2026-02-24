@@ -1,13 +1,35 @@
 import { postgresAdapter } from '@payloadcms/db-postgres';
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer';
 import { seoPlugin } from '@payloadcms/plugin-seo';
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import { es } from '@payloadcms/translations/languages/es';
 import path from 'path';
 import { buildConfig } from 'payload';
+import sharp from 'sharp';
 
 const MEDIA_PATH = path.resolve(process.cwd(), 'public/media');
 
 export default buildConfig({
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:5601',
+  serverURL: (process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:5601').replace(/\/$/, ''),
+  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:5601', 'https://pirotecniafaviofavio.com', 'https://www.pirotecniafaviofavio.com'],
+  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:5601', 'https://pirotecniafaviofavio.com', 'https://www.pirotecniafaviofavio.com'],
+  ...(process.env.SMTP_PASS
+    ? {
+      email: nodemailerAdapter({
+        defaultFromAddress: 'contacto@pirotecnia.com',
+        defaultFromName: 'Pirotecnia',
+        transportOptions: {
+          host: process.env.SMTP_HOST || 'smtp.resend.com',
+          port: parseInt(process.env.SMTP_PORT || '465', 10),
+          auth: {
+            user: process.env.SMTP_USER || 'resend',
+            pass: process.env.SMTP_PASS,
+          },
+        },
+      }),
+    }
+    : {}),
+  sharp,
   i18n: {
     fallbackLanguage: 'es',
     supportedLanguages: { es },
@@ -859,6 +881,13 @@ export default buildConfig({
     },
   ],
   plugins: [
+    vercelBlobStorage({
+      enabled: !!process.env.BLOB_READ_WRITE_TOKEN,
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
     seoPlugin({
       collections: ['products', 'locations', 'events'],
       tabbedUI: true,
@@ -886,6 +915,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI!,
     },
+    push: process.env.NODE_ENV !== 'production' || process.env.DB_PUSH === 'true', // Disable in prod by default for Supabase pooler compatibility
   }),
   graphQL: {
     disable: false,
